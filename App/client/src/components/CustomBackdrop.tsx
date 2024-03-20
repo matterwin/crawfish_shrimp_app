@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { TouchableWithoutFeedback } from 'react-native';
 import { BottomSheetBackdropProps } from "@gorhom/bottom-sheet";
 import Animated, {
   Extrapolate,
@@ -6,7 +7,7 @@ import Animated, {
   useAnimatedStyle,
 } from "react-native-reanimated";
 
-const CustomBackdrop = ({ animatedIndex, style }: BottomSheetBackdropProps) => {
+const CustomBackdrop = ({ animatedIndex, onSelectBackdrop, style }: BottomSheetBackdropProps) => {
   // animated variables
   const containerAnimatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(
@@ -22,14 +23,18 @@ const CustomBackdrop = ({ animatedIndex, style }: BottomSheetBackdropProps) => {
     () => [
       style,
       {
-        backgroundColor: "#00000066",
+        backgroundColor: "#00000000",
       },
       containerAnimatedStyle,
     ],
     [style, containerAnimatedStyle]
   );
 
-  return <Animated.View pointerEvents={"none"} style={containerStyle} />;
+  return (
+    <TouchableWithoutFeedback onPress={onSelectBackdrop}>
+      <Animated.View pointerEvents="none" style={containerStyle} />
+    </TouchableWithoutFeedback>
+  );
 };
 
 export default CustomBackdrop;

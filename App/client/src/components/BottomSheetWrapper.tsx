@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { COLORS } from '../constants';
 import CustomBackdrop from './CustomBackdrop';
@@ -14,7 +14,7 @@ const BottomSheetWrapper = ({ children }: Props) => {
   const textInputRef = useRef<TextInput>(null);
   const [vendor, setVendor] = useState('');
 
-  const snapPoints = useMemo(() => ['14%', '67%', '85%'], []);
+  const snapPoints = useMemo(() => ['14%', '67%', '92%'], []);
 
   const handleSheetChanges = useCallback((index: number) => {
     console.log('handleSheetChanges', index);
@@ -24,11 +24,16 @@ const BottomSheetWrapper = ({ children }: Props) => {
 
   const handleFocus = () => {
     bottomSheetRef.current?.snapToIndex(2);
+    textInputRef.current?.focus();
   };
+
+  const handleBackdropSelection = useCallback(() => {
+    bottomSheetRef.current?.snapToIndex(0);
+  }, []);
 
   return (
     <View style={styles.container}>
-      {children}
+      {children} 
       <BottomSheet
         ref={bottomSheetRef}
         index={0}
@@ -38,25 +43,34 @@ const BottomSheetWrapper = ({ children }: Props) => {
         backgroundStyle={{ backgroundColor: COLORS.teal, borderRadius: 15, borderWidth: 1, borderColor: COLORS.tealwhite }}
         handleIndicatorStyle={{ backgroundColor: COLORS.brightteal, width: 60, height: 5 }}
         backdropComponent={(props) => (
-          <CustomBackdrop {...props}/>
+          <CustomBackdrop {...props} onSelectBackdrop={handleBackdropSelection} />
         )}
       >
+      <TouchableWithoutFeedback onPressIn={Keyboard.dismiss} style={{flex: 1}}>
         <View style={styles.contentContainer}>
           <View style={styles.textInputContainer}>
+            <TouchableWithoutFeedback onPressIn={handleFocus}>
             <Icon name="search" size={25} color={COLORS.tealwhite} style={styles.searchIcon} />
-              <TextInput
-                ref={textInputRef}
-                placeholder='Lookup vendor ...' 
-                placeholderTextColor={'rgba(255, 255, 255, 0.6)'}
-                value={vendor} 
-                autoCapitalize='none' 
-                onChangeText={(text) => setVendor(text)}
-                color={COLORS.royalblue}
-                onFocus={handleFocus}
-                style={styles.textInput}
-              />
-          </View>        
-        </View>
+            </TouchableWithoutFeedback>
+            <TextInput
+              ref={textInputRef}
+              placeholder='Search vendor' 
+              placeholderTextColor={'rgba(0, 0, 0, 0.6)'}
+              value={vendor} 
+              autoCapitalize='none' 
+              onChangeText={(text) => setVendor(text)}
+              color={COLORS.royalblue}
+              onFocus={handleFocus}
+              style={styles.textInput}
+            />
+          </View>
+          <View style={styles.bottomTab}>
+            <View>
+              <Text>Test</Text>
+            </View>
+          </View>
+        </View> 
+        </TouchableWithoutFeedback>
       </BottomSheet>
     </View>
   );
@@ -84,20 +98,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: COLORS.tealwhite,
-    borderRadius: 15,
-    padding: 15,
+    borderRadius: 50,
+    // padding: 15,
     marginTop: 5,
     width: '100%',
     backgroundColor: COLORS.brightteal
   },
   searchIcon: {
-    marginRight: 13,
+    // marginRight: 13,
+    padding: 15,
+    paddingRight: 0
   },
   textInput: {
     color: COLORS.white,
     flex: 1,
     fontSize: 17,
     marginLeft: 5,
+    padding: 15,
+    borderRadius: 50,
   },
 });
 
