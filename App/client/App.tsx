@@ -6,6 +6,7 @@ import AuthNav from './src/navigation/AuthNav';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import AppNav from './src/navigation/AppNav.tsx';
 import { FIREBASE_AUTH } from './FirebaseConfig';
+import { COLORS } from './src/constants';
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -40,8 +41,6 @@ export default AppWrapper;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: COLORS.deepgreen,
   },
 });

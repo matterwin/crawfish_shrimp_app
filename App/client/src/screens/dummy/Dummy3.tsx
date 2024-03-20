@@ -1,21 +1,19 @@
 import React from "react";
 import { SafeAreaView, Button, Text, View, StyleSheet } from "react-native";
-import BottomSheetWrapper from '../../components/BottomSheetWrapper.tsx';
 import { COLORS } from "../../constants";
-import FoodNav from '../../navigation/FoodNav.tsx';
 
-const Dummy = () => {
+const Dummy3 = () => {
     return(
-      <BottomSheetWrapper>
-        <FoodNav />
-      </BottomSheetWrapper>
+        <View style={styles.container}><Text> Test Screen</Text></View>
     );
 }
 
-export default Dummy;
+export default Dummy3;
 
 const styles = StyleSheet.create({
     container: {
       flex: 1,
+      backgroundColor: '#0b2226',
+      padding: 15,
     },
 });
