@@ -1,13 +1,10 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
-import CustomBackdrop from './CustomBackdrop';
 
-type Props = {
-  children: JSX.Element | JSX.Element[];
-}
 
-const BottomSheetWrapper = ({ children }: Props) => {
+
+const BottomSheetWrapper = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   const snapPoints = useMemo(() => ['7%', '67%', '93%'], []);
@@ -18,15 +15,12 @@ const BottomSheetWrapper = ({ children }: Props) => {
 
   return (
     <View style={styles.container}>
-      {children}
       <BottomSheet
         ref={bottomSheetRef}
         index={0}
         snapPoints={snapPoints}
         onChange={handleSheetChanges}
-        handleStyle={{ marginBottom: -10, borderRadius: 15 }}
-        backgroundStyle={{ backgroundColor: 'red', borderRadius: 15, borderWidth: 1, borderColor: 'blue' }}
-        handleIndicatorStyle={{ backgroundColor: "green", width: 60, height: 5 }}
+
       >
         <View style={styles.contentContainer}>
           <Text style={styles.foldersTitle}>Folders</Text>
@@ -35,6 +29,8 @@ const BottomSheetWrapper = ({ children }: Props) => {
     </View>
   );
 };
+
+export default BottomSheetWrapper;
 
 const styles = StyleSheet.create({
   container: {
@@ -52,10 +48,10 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   foldersTitle: {
+    color: "grey",
     fontWeight: '900',
     fontSize: 20,
   }
 });
 
-export default BottomSheetWrapper;
 

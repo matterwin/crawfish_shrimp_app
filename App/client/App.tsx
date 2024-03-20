@@ -7,7 +7,7 @@ import { User, onAuthStateChanged } from 'firebase/auth';
 import AppNav from './src/navigation/AppNav.tsx';
 import { FIREBASE_AUTH } from './FirebaseConfig';
 
-export default function App() {
+const App = () => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
 
@@ -19,13 +19,23 @@ export default function App() {
     });
   },[])
 
-  return (
+return (
     <NavigationContainer>
       {user ? <AppNav /> : <AuthNav />}
       <StatusBar style="light" translucent={true}/>
     </NavigationContainer>
   );
 }
+
+const AppWrapper = () => {
+  return (
+    // <Provider store={store}>
+      <App />
+    // </Provider>
+  );
+}
+
+export default AppWrapper;
 
 const styles = StyleSheet.create({
   container: {

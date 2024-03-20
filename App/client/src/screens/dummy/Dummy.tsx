@@ -1,9 +1,12 @@
 import React from "react";
 import { SafeAreaView, Button, Text, View } from "react-native";
+import BottomSheetWrapper from '../../components/BottomSheetWrapper.tsx';
 
 const Dummy = () => {
     return(
-        <Text>Test Screen</Text>
+      <BottomSheetWrapper >
+        <View><Text> Test Screen</Text></View>
+      </BottomSheetWrapper>
     );
 }
 
