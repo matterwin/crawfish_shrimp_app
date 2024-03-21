@@ -1,9 +1,10 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { COLORS } from '../constants';
 import CustomBackdrop from './CustomBackdrop';
 import Icon from 'react-native-vector-icons/Ionicons';
+import ModalInfo from './ModalInfo.tsx';
 
 type Props = {
   children: JSX.Element | JSX.Element[];
@@ -99,7 +100,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.tealwhite,
     borderRadius: 50,
-    // padding: 15,
     marginTop: 5,
     width: '100%',
     backgroundColor: COLORS.brightteal
