@@ -4,7 +4,7 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import { COLORS } from '../constants';
 import CustomBackdrop from './CustomBackdrop';
 import Icon from 'react-native-vector-icons/Ionicons';
-import ModalInfo from './ModalInfo.tsx';
+import ModalLocation from './ModalLocation.tsx';
 
 type Props = {
   children: JSX.Element | JSX.Element[];

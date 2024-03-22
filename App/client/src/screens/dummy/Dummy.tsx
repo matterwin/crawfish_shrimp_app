@@ -3,14 +3,14 @@ import { SafeAreaView, Button, Text, View, StyleSheet } from "react-native";
 import BottomSheetWrapper from '../../components/BottomSheetWrapper.tsx';
 import { COLORS } from "../../constants";
 import FoodNav from '../../navigation/FoodNav.tsx';
-import ModalInfo from '../../components/ModalInfo.tsx';
+import ModalLocation from '../../components/ModalLocation.tsx';
 
 const Dummy = () => {
     return(
       <BottomSheetWrapper>
         <FoodNav />
         <View style={styles.modalContainer}>
-          <ModalInfo />
+          <ModalLocation />
         </View>
       </BottomSheetWrapper>
     );

@@ -1,16 +1,55 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {Alert, Modal, StyleSheet, Text, Pressable, View, Dimensions, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { COLORS } from '../constants';
 import * as Haptics from 'expo-haptics';
+import * as Location from 'expo-location';
 
-const App = () => {
+const ModalLocation = () => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [location, setLocation] = useState(''); 
+  const [realLocation, setRealLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+    })();
+  }, []);
 
   const handleOnPress = () => {
     setModalVisible(true);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-  }
+  };
+
+  const handleNewCityPress = () => {
+    setLocation('city');
+    console.log('city pressed');
+  };
+
+  const handleCurrLocationPress = async() => {
+    setLocation('current');
+    console.log('current location pressed');
+    try {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if(status !== granted) {
+        alert("location not shared");
+      }
+    } catch (e) {}
+  };
+
+  // setup for actual implementation
+  // useEffect(() => {
+  //   console.log("location changed");
+  // },[location])
 
   return (
     <View style={styles.centeredView}>
@@ -27,12 +66,24 @@ const App = () => {
             <View style={styles.contentModalMinusCloseView}>
               <Text style={styles.modalText}>Set your location</Text>
               <View style={styles.optionsBoxParentView}>
-                <TouchableOpacity style={[styles.optionBoxView, { borderColor: "rgba(144, 149, 158, 0.3)", borderRightWidth: 1 }]}>
+                <TouchableOpacity
+                  onPress={handleNewCityPress}
+                  style={[styles.optionBoxView, { borderColor: "rgba(144, 149, 158, 0.3)", borderRightWidth: 1 }]}
+                >
                   <Icon name="subway" size={50} color={COLORS.brightteal}/>
+                  <View>
+                    <Text style={styles.optionText}> Choose new city </Text>
+                  </View>
                 </TouchableOpacity>
-                <View style={[styles.optionBoxView, { borderColor: "rgba(144, 149, 158, 0.3)", borderLeftWidth: 1 }]}>
-                  <Icon name="subway" size={50} color={COLORS.brightteal}/>
-                </View>
+                <TouchableOpacity 
+                  onPress={handleCurrLocationPress} 
+                  style={[styles.optionBoxView, { borderColor: "rgba(144, 149, 158, 0.3)", borderRightWidth: 1 }]}
+                >
+                  <Icon name="body" size={50} color={COLORS.brightteal}/>
+                  <View>
+                    <Text style={styles.optionText}> Use Current Location </Text>
+                  </View>
+                </TouchableOpacity>
               </View>
             </View>
             <View style={[styles.closeParentView, styles.shadowView]}>
@@ -51,6 +102,8 @@ const App = () => {
     </View>
   );
 };
+
+export default ModalLocation;
 
 const styles = StyleSheet.create({
   centeredView: {
@@ -84,12 +137,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: "rgba(144, 149, 158, 0.3)",
     borderTopWidth: 1,
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
   },
   optionBoxView: {
    flex: 1,
    justifyContent: 'center',
-   alignItems: 'center'
+   alignItems: 'center',
+   gap: 20
+  },
+  optionText: {
+    color: COLORS.white,
+    fontSize: 16
   },
   button: {
     borderRadius: "50%",
@@ -165,4 +226,3 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
