@@ -2,9 +2,15 @@ import React, { useState } from 'react';
 import {Alert, Modal, StyleSheet, Text, Pressable, View, Dimensions, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { COLORS } from '../constants';
+import * as Haptics from 'expo-haptics';
 
 const App = () => {
   const [modalVisible, setModalVisible] = useState(false);
+
+  const handleOnPress = () => {
+    setModalVisible(true);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+  }
 
   return (
     <View style={styles.centeredView}>
@@ -18,21 +24,20 @@ const App = () => {
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </Pressable>
-            <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={styles.bottomCloseContainer}>
-              <Text style={styles.closeText}>CLOSE</Text> 
-            </TouchableOpacity>
+            <View style={styles.contentModalMinusCloseView}>
+              <Text style={styles.modalText}>Set your location</Text>
+            </View>
+            <View style={[styles.tests, styles.shadowView]}>
+              <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={styles.bottomCloseContainer}>
+                <Text style={styles.closeText}>CLOSE</Text> 
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>
       <Pressable
         style={[styles.button]}
-        onPress={() => setModalVisible(true)}>
+        onPress={handleOnPress}>
         <Icon name="pin" size={55} color={COLORS.orange} style={styles.modalIcon} />
       </Pressable>
     </View>
@@ -61,6 +66,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  contentModalMinusCloseView: {
+    padding: 50,
+  },
   button: {
     borderRadius: "50%",
     borderColor: COLORS.grey,
@@ -84,6 +92,9 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 22,
+    color: COLORS.white
   },
   modalIcon: {
     padding: 0,
@@ -98,23 +109,37 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  bottomCloseContainer: {
-    backgroundColor: COLORS.brightteal,
+  tests: {
     borderRadius: 15,
-    borderColor: COLORS.grey,
-    borderWidth: 1,
     position: 'absolute', 
     bottom: 0, 
-    padding: 20,
     height: "14%",
     width: Dimensions.get('window').width,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: COLORS.teal
+  },
+  shadowView: {
+    shadowColor: COLORS.black,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 10,
+    shadowOffset: { width: 1, height: 1 },
+    shadowRadius: 10,
+    shadowOpacity: 0.1,
+  },
+  bottomCloseContainer: {
+    borderRadius: 15,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+    paddingBottom: 20,
   },
   closeText: {
     fontWeight: 'bold',
-    fontSize: 20,
-    color: COLORS.deepgreen
+    fontSize: 21,
+    color: COLORS.orange
   },
 });
 
