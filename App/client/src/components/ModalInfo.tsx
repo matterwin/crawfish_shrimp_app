@@ -26,8 +26,16 @@ const App = () => {
           <View style={styles.modalView}>
             <View style={styles.contentModalMinusCloseView}>
               <Text style={styles.modalText}>Set your location</Text>
+              <View style={styles.optionsBoxParentView}>
+                <TouchableOpacity style={[styles.optionBoxView, { borderColor: "rgba(144, 149, 158, 0.3)", borderRightWidth: 1 }]}>
+                  <Icon name="subway" size={50} color={COLORS.brightteal}/>
+                </TouchableOpacity>
+                <View style={[styles.optionBoxView, { borderColor: "rgba(144, 149, 158, 0.3)", borderLeftWidth: 1 }]}>
+                  <Icon name="subway" size={50} color={COLORS.brightteal}/>
+                </View>
+              </View>
             </View>
-            <View style={[styles.tests, styles.shadowView]}>
+            <View style={[styles.closeParentView, styles.shadowView]}>
               <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={styles.bottomCloseContainer}>
                 <Text style={styles.closeText}>CLOSE</Text> 
               </TouchableOpacity>
@@ -69,6 +77,20 @@ const styles = StyleSheet.create({
   contentModalMinusCloseView: {
     padding: 50,
   },
+  optionsBoxParentView: {
+    width: Dimensions.get('window').width,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    borderColor: "rgba(144, 149, 158, 0.3)",
+    borderTopWidth: 1,
+    borderBottomWidth: 1
+  },
+  optionBoxView: {
+   flex: 1,
+   justifyContent: 'center',
+   alignItems: 'center'
+  },
   button: {
     borderRadius: "50%",
     borderColor: COLORS.grey,
@@ -109,7 +131,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  tests: {
+  closeParentView: {
     borderRadius: 15,
     position: 'absolute', 
     bottom: 0, 

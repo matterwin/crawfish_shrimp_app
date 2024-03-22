@@ -63,7 +63,14 @@ const BottomSheetWrapper = ({ children }: Props) => {
               color={COLORS.royalblue}
               onFocus={handleFocus}
               style={styles.textInput}
+              onChangeText={(text) => setVendor(text)}
+              keyboardAppearance='dark'
             />
+            {vendor.length !== 0 &&
+              <TouchableOpacity onPress={() => setVendor('')}>
+                <Icon name="close" size={25} color={COLORS.tealwhite} style={styles.closeIcon} />
+              </TouchableOpacity>
+            }
           </View>
           <View style={styles.bottomTab}>
             <View>
@@ -105,9 +112,12 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.brightteal
   },
   searchIcon: {
-    // marginRight: 13,
     padding: 15,
     paddingRight: 0
+  },
+  closeIcon: {
+    padding: 15,
+    paddingLeft: 0
   },
   textInput: {
     color: COLORS.white,
