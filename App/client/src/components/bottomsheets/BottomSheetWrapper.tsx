@@ -1,10 +1,10 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
-import { COLORS } from '../constants';
+import { COLORS } from '../../constants';
 import CustomBackdrop from './CustomBackdrop';
 import Icon from 'react-native-vector-icons/Ionicons';
-import ModalLocation from './ModalLocation.tsx';
+import ModalLocation from '../modals/ModalLocation.tsx';
 
 type Props = {
   children: JSX.Element | JSX.Element[];
@@ -14,13 +14,12 @@ const BottomSheetWrapper = ({ children }: Props) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const textInputRef = useRef<TextInput>(null);
   const [vendor, setVendor] = useState('');
+  const [snapIndex, setSnapIndex] = useState(0);
 
   const snapPoints = useMemo(() => ['14%', '67%', '92%'], []);
 
   const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
-
-    if(index === 0) textInputRef.current?.blur();
+    setSnapIndex(index);
   }, []);
 
   const handleFocus = () => {
@@ -30,6 +29,7 @@ const BottomSheetWrapper = ({ children }: Props) => {
 
   const handleBackdropSelection = useCallback(() => {
     bottomSheetRef.current?.snapToIndex(0);
+    Keyboard.dismiss();
   }, []);
 
   return (
@@ -50,9 +50,14 @@ const BottomSheetWrapper = ({ children }: Props) => {
       <TouchableWithoutFeedback onPressIn={Keyboard.dismiss} style={{flex: 1}}>
         <View style={styles.contentContainer}>
           <View style={styles.textInputContainer}>
-            <TouchableWithoutFeedback onPressIn={handleFocus}>
-            <Icon name="search" size={25} color={COLORS.tealwhite} style={styles.searchIcon} />
-            </TouchableWithoutFeedback>
+            <TouchableOpacity onPressIn={snapIndex === 0 ? handleFocus : handleBackdropSelection }>
+              <Icon 
+                name={snapIndex === 0 ? 'search' : 'arrow-back'} 
+                size={25} 
+                color={COLORS.tealwhite} 
+                style={styles.searchIcon} 
+              />
+            </TouchableOpacity>
             <TextInput
               ref={textInputRef}
               placeholder='Search vendor' 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, StyleSheet, Text, Pressable, View, Dimensions, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { COLORS } from '../constants';
+import { COLORS } from '../../constants';
 import * as Haptics from 'expo-haptics';
 import * as Location from 'expo-location';
 import ModalAllowLocation from './ModalAllowLocation';
@@ -101,7 +101,6 @@ const ModalLocation = () => {
                       }
                     ]}
                   >
-
                     <Icon name="subway" size={50} color={COLORS.brightteal}/>
                     <View>
                       <Text style={styles.optionText}>Choose new city</Text>
@@ -134,7 +133,7 @@ const ModalLocation = () => {
             </View>
           </View>
           {showModalAllowLocation && <ModalAllowLocation setShowModalAllowLocation={setShowModalAllowLocation} />}
-          {showModalCityChooser && <ModalCityChooser setShowModalCityChooser={setShowModalCityChooser} />} 
+          {showModalCityChooser && <ModalCityChooser setShowModalCityChooser={setShowModalCityChooser} setCity={setCity} city={city} />} 
         </View>
       </Modal>
       <Pressable
