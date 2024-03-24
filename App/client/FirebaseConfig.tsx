@@ -1,14 +1,22 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, initializeAuth, getReactNativePersistence } from 'firebase/auth';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  API_KEY,
+  AUTH_DOMAIN,
+  PROJECT_ID,
+  STORAGE_BUCKET,
+  MESSAGING_SENDER_ID,
+  APP_ID
+} from "@env";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAlAvdBfsy1Y__Vs9OC9tNfNv1SbwWMhWI",
-  authDomain: "crawfish-ea28a.firebaseapp.com",
-  projectId: "crawfish-ea28a",
-  storageBucket: "crawfish-ea28a.appspot.com",
-  messagingSenderId: "1012270354129",
-  appId: "1:1012270354129:web:dfd61ed056d3646a107ff0"
+  apiKey: API_KEY,
+  authDomain: AUTH_DOMAIN,
+  projectId: PROJECT_ID,
+  storageBucket: STORAGE_BUCKET,
+  messagingSenderId: MESSAGING_SENDER_ID,
+  appId: APP_ID
 };
 
 export const FIREBASE_APP = initializeApp(firebaseConfig);
