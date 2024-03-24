@@ -7,11 +7,23 @@ import ChosenCityAutoComplete from '../autocompletes/ChosenCityAutoComplete.tsx'
 
 const ModalCityChooser = ({ setShowModalCityChooser, setCity, city }) => {
   const [modalVisible, setModalVisible] = useState(true);
+  const [lastCityLocation, setLastCityLocation] = useState(city);
   const textInputRef = useRef<TextInput>(null);
 
   const handleClosingModal = () => {
     setModalVisible(false);
     setShowModalCityChooser(false);
+    if(city.length === 0) {
+      setCity(lastCityLocation);
+    }
+  };
+
+  const handleClosingSearchModal = () => {
+    if(city.length === 0) {
+      setCity(lastCityLocation);
+      setModalVisible(false);
+      setShowModalCityChooser(false);
+    }
   };
 
   const handleFocus = () => {
@@ -27,7 +39,7 @@ const ModalCityChooser = ({ setShowModalCityChooser, setCity, city }) => {
         onRequestClose={handleClosingModal}
       >
       <BlurView intensity={20} style={{flex: 1}}>
-      <TouchableWithoutFeedback onPress={handleClosingModal}>
+      <TouchableWithoutFeedback onPress={handleClosingSearchModal}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.textInputContainer}>
@@ -53,7 +65,15 @@ const ModalCityChooser = ({ setShowModalCityChooser, setCity, city }) => {
                 </TouchableOpacity>
               }
             </View>
-            {city && <ChosenCityAutoComplete handleClosingModal={handleClosingModal} city={city} setCity={setCity} />}
+            {city && 
+              <ChosenCityAutoComplete 
+                handleClosingSearchModal={handleClosingSearchModal} 
+                handleClosingModal={handleClosingModal} 
+                city={city}
+                setCity={setCity} 
+                lastCityLocation={lastCityLocation}
+              />
+            }
           </View>
         </View>
         </TouchableWithoutFeedback>

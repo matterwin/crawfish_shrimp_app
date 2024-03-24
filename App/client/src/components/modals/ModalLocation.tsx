@@ -30,14 +30,12 @@ const ModalLocation = () => {
   const handleNewCityPress = () => {
     setShowModalCityChooser(true);
     setLocation('city');
-    console.log('city pressed');
   };
 
   const handleCurrLocationPress = async() => {
     try {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if(status !== 'granted') {
-        console.log("user denied grant in try"); 
         setShowModalAllowLocation(true);  
       } else {
         setLocation('precise');
@@ -60,21 +58,13 @@ const ModalLocation = () => {
     } catch (e) {}
   };
 
-  // setup for actual implementation
-  // useEffect(() => {
-  //   console.log("location changed");
-  // },[location])
-
   return (
     <View style={styles.centeredView}>
       <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Use Location');
-          setModalVisible(!modalVisible);
-        }}>
+        onRequestClose={() => { setModalVisible(!modalVisible); }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>          
             <View style={styles.contentModalMinusCloseView}>
@@ -133,7 +123,13 @@ const ModalLocation = () => {
             </View>
           </View>
           {showModalAllowLocation && <ModalAllowLocation setShowModalAllowLocation={setShowModalAllowLocation} />}
-          {showModalCityChooser && <ModalCityChooser setShowModalCityChooser={setShowModalCityChooser} setCity={setCity} city={city} />} 
+          {showModalCityChooser && 
+            <ModalCityChooser 
+              setShowModalCityChooser={setShowModalCityChooser} 
+              setCity={setCity} 
+              city={city} 
+            />
+          } 
         </View>
       </Modal>
       <Pressable
