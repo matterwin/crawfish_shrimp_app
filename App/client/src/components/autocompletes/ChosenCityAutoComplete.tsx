@@ -2,11 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Dimensions, View, TextInput, FlatList, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { citiesData } from '../../api/static/citiesData.tsx';
 import { COLORS } from '../../constants';
-import SearchPlaces from './SearchPlaces.tsx';
 
-const ChosenCityAutoComplete = ({ handleClosingSearchModal, handleClosingModal, city, setCity, lastCityLocation }) => {
-  const [suggestions, setSuggestions] = useState([]);
-
+const ChosenCityAutoComplete = ({ handleClosingSearchModal, handleClosingModal, city, setCity, lastCityLocation }) => { 
   useEffect(() => {
     handleInputChange(city);
   },[city])
@@ -45,7 +42,6 @@ const ChosenCityAutoComplete = ({ handleClosingSearchModal, handleClosingModal, 
         keyExtractor={(item) => item.city}
         style={styles.flatList}
       />
-      <SearchPlaces />
     </View>
           </TouchableWithoutFeedback>
   );

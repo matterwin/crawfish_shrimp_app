@@ -4,10 +4,12 @@ import { BlurView } from 'expo-blur';
 import { COLORS } from '../../constants';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ChosenCityAutoComplete from '../autocompletes/ChosenCityAutoComplete.tsx';
+import SearchPlaces from '../autocompletes/SearchPlaces.tsx';
 
 const ModalCityChooser = ({ setShowModalCityChooser, setCity, city }) => {
   const [modalVisible, setModalVisible] = useState(true);
   const [lastCityLocation, setLastCityLocation] = useState(city);
+  const [suggestions, setSuggestions] = useState([]);
   const textInputRef = useRef<TextInput>(null);
 
   const handleClosingModal = () => {
@@ -65,15 +67,15 @@ const ModalCityChooser = ({ setShowModalCityChooser, setCity, city }) => {
                 </TouchableOpacity>
               }
             </View>
-            {city && 
-              <ChosenCityAutoComplete 
+            
+              <SearchPlaces 
                 handleClosingSearchModal={handleClosingSearchModal} 
                 handleClosingModal={handleClosingModal} 
                 city={city}
                 setCity={setCity} 
                 lastCityLocation={lastCityLocation}
-              />
-            }
+                setSuggestions={setSuggestions}
+              />  
           </View>
         </View>
         </TouchableWithoutFeedback>
