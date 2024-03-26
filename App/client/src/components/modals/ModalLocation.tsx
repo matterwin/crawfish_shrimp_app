@@ -9,7 +9,8 @@ import ModalCityChooser from './ModalCityChooser.tsx';
 
 const ModalLocation = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [location, setLocation] = useState(''); 
+  const [llocation, setLocation] = useState(''); 
+  const [prevl, setPrevl] = useState('');
   const [realLocation, setRealLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [showModalAllowLocation, setShowModalAllowLocation] = useState(false);
@@ -28,7 +29,8 @@ const ModalLocation = () => {
   };
 
   const handleNewCityPress = () => {
-    setShowModalCityChooser(true);
+    setShowModalCityChooser(true); 
+    setPrevl(llocation);
     setLocation('city');
   };
 
@@ -39,6 +41,7 @@ const ModalLocation = () => {
         setShowModalAllowLocation(true);  
       } else {
         setLocation('precise');
+        setPrevl('precise');
         let location = await Location.getCurrentPositionAsync({});
         const { latitude, longitude } = location.coords;
 
@@ -47,14 +50,15 @@ const ModalLocation = () => {
         console.log(longitude);
         console.log(latitude);
 
-        let region = await Location.reverseGeocodeAsync({
+        let reverseGeocode = await Location.reverseGeocodeAsync({
           latitude,
           longitude,
         });
 
-        if (region.length > 0) {
-          const { city } = region[0];
-          setCity(city || 'Unknown');
+        if (reverseGeocode.length > 0) {
+          const { city, region } = reverseGeocode[0];
+          const combinedCityRegion = city && region ? `${city}, ${region}` : city || 'Unknown';
+          setCity(combinedCityRegion);
         }
       }
     } catch (e) {}
@@ -89,7 +93,7 @@ const ModalLocation = () => {
                       { 
                         borderColor: "rgba(144, 149, 158, 0.3)", 
                         borderRightWidth: 1, 
-                        backgroundColor: location === 'city' ? COLORS.tealwhite : 'transparent'
+                        backgroundColor: llocation === 'city' ? COLORS.tealwhite : 'transparent'
                       }
                     ]}
                   >
@@ -100,13 +104,13 @@ const ModalLocation = () => {
                   </TouchableOpacity>
                   <TouchableOpacity 
                     onPress={handleCurrLocationPress} 
-                    disabled={location === 'precise'}
+                    disabled={llocation === 'precise' && prevl === 'precise'}
                     style={[
                       styles.optionBoxView, 
                       { 
                         borderColor: "rgba(144, 149, 158, 0.3)", 
                         borderLeftWidth: 1, 
-                        backgroundColor: location === 'precise' ? COLORS.tealwhite : 'transparent'
+                        backgroundColor: llocation === 'precise' && prevl === 'precise' ? COLORS.tealwhite : 'transparent'
                       }
                     ]}
                   >
@@ -129,7 +133,11 @@ const ModalLocation = () => {
             <ModalCityChooser 
               setShowModalCityChooser={setShowModalCityChooser} 
               setCity={setCity} 
-              city={city} 
+              city={city}
+              setLocation={setLocation}
+              location={llocation}
+              setPrevl={setPrevl}
+              prevl={prevl}
             />
           } 
         </View>

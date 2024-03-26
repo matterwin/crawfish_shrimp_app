@@ -5,7 +5,7 @@ import { COLORS } from '../../constants';
 import { completedResults } from '../../api/places/handlePlaceAutoComplete.tsx';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const ChosenCityAutoComplete = ({ closeKeyboard, handleClosingSearchModal, handleClosingModal, city, setCity, lastCityLocation }) => { 
+const ChosenCityAutoComplete = ({ closeKeyboard, handleClosingSearchModal, handleClosingModal, city, setCity, lastCityLocation, setLocation, setPrevl }) => { 
   const [suggestions, setSuggestions] = useState([]);
   const [pressedItemIndex, setPressedItemIndex] = useState(null);
 
@@ -24,6 +24,8 @@ const ChosenCityAutoComplete = ({ closeKeyboard, handleClosingSearchModal, handl
   const handleTextPress = (chosenCity) => {
     setCity(chosenCity);
     handleClosingModal();
+    setLocation('city');
+    setPrevl('city');
   };
 
   const searchCities = async () => {
@@ -54,7 +56,7 @@ const ChosenCityAutoComplete = ({ closeKeyboard, handleClosingSearchModal, handl
       //
       //   setSuggestions(formattedSuggestions);
       //   console.log(formattedSuggestions);
-        //} 
+      // } 
     } catch (err) {
       console.log(err);
     }
@@ -100,7 +102,6 @@ const ChosenCityAutoComplete = ({ closeKeyboard, handleClosingSearchModal, handl
         keyExtractor={(item, index) => index.toString()}
         style={styles.flatList}
         onScrollEndDrag={closeKeyboard}
-        onScrollBeginDrag={() => console.log("test")}
       />
     </View>
   );

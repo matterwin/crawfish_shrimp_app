@@ -6,16 +6,17 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import ChosenCityAutoComplete from '../autocompletes/ChosenCityAutoComplete.tsx';
 import SearchPlaces from '../autocompletes/SearchPlaces.tsx';
 
-const ModalCityChooser = ({ setShowModalCityChooser, setCity, city }) => {
+const ModalCityChooser = ({ setShowModalCityChooser, setCity, city, setLocation, location, setPrevl, prevl }) => {
   const [modalVisible, setModalVisible] = useState(true);
-  const [lastCityLocation, setLastCityLocation] = useState(city); 
+  const [lastCityLocation, setLastCityLocation] = useState(city);
   const textInputRef = useRef<TextInput>(null);
 
   const handleClosingModal = () => {
     setModalVisible(false);
-    setShowModalCityChooser(false);
+    setShowModalCityChooser(false); 
     if(city.length === 0) {
       setCity(lastCityLocation);
+      setLocation(prevl); 
     }
   };
 
@@ -24,6 +25,7 @@ const ModalCityChooser = ({ setShowModalCityChooser, setCity, city }) => {
       setCity(lastCityLocation);
       setModalVisible(false);
       setShowModalCityChooser(false);
+      setLocation(prevl); 
     }
   };
 
@@ -77,6 +79,8 @@ const ModalCityChooser = ({ setShowModalCityChooser, setCity, city }) => {
                   city={city}
                   setCity={setCity} 
                   lastCityLocation={lastCityLocation}
+                  setLocation={setLocation}
+                  setPrevl={setPrevl}
                 />
               }
             </View>
