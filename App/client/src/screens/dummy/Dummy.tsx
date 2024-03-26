@@ -4,14 +4,15 @@ import BottomSheetWrapper from '../../components/bottomsheets/BottomSheetWrapper
 import { COLORS } from "../../constants";
 import FoodNav from '../../navigation/FoodNav.tsx';
 import ModalLocation from '../../components/modals/ModalLocation.tsx';
+import ModalNotification from '../../components/modals/ModalNotification.tsx';
 
 const Dummy = () => {
     return(
       <BottomSheetWrapper>
-        <FoodNav />
-        <View style={styles.modalContainer}>
+        <FoodNav /> 
+        <View style={styles.locationContainer}>
           <ModalLocation />
-        </View>
+        </View> 
       </BottomSheetWrapper>
     );
 }
@@ -19,12 +20,14 @@ const Dummy = () => {
 export default Dummy;
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-    },
-    modalContainer: {
-      position: 'absolute', 
-      bottom: '14%', 
-      margin: 15,
-    },
+  locationContainer: {
+    position: 'absolute', 
+    bottom: '14%', 
+    margin: 15,
+  },
+  notificationContainerContainer: {
+    position: 'absolute', 
+    top: '50%',
+    margin: 15,
+  },
 });

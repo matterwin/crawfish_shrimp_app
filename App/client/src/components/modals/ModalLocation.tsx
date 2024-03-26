@@ -10,8 +10,7 @@ import ModalCityChooser from './ModalCityChooser.tsx';
 const ModalLocation = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [llocation, setLocation] = useState(''); 
-  const [prevl, setPrevl] = useState('');
-  const [realLocation, setRealLocation] = useState(null);
+  const [prevl, setPrevl] = useState(''); 
   const [errorMsg, setErrorMsg] = useState(null);
   const [showModalAllowLocation, setShowModalAllowLocation] = useState(false);
   const [showModalCityChooser, setShowModalCityChooser] = useState(false);

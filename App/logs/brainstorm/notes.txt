@@ -1,0 +1,39 @@
+# crawfish app notes
+
+# March 2024:
+
+nameofplace
+long
+lat
+address
+phone
+stars
+prices -- foreign key to another table for the prices belonging to this place
+
+good?
+
+question is how to get this information
+
+for user to see results/places these things need to happen:
+- user sends their location, either city or precise location (long, lat) to backend
+
+- user picks filter for results:
+	- cheapest
+	- most expensive
+	- best reviews
+	- worst reviews
+
+- backend generates the results based on filter and location
+- backend shows results to user and displays the distance to user and place via matrix api
+- by default the results would be produced via closest dist to user
+	ex: filter is cheapest, user sees cheapest places closest to them
+	ex: no filter, user sees places closest to them
+
+
+(future map visualization)
+- with those generated results, we would have name of places of whatever needed to use google map api
+
+
+searching for exact location will behave differently
+- no filter
+- display closest places with respect to the textinput of user

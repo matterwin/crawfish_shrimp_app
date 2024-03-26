@@ -5,7 +5,16 @@ import { COLORS } from '../../constants';
 import { completedResults } from '../../api/places/handlePlaceAutoComplete.tsx';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const ChosenCityAutoComplete = ({ closeKeyboard, handleClosingSearchModal, handleClosingModal, city, setCity, lastCityLocation, setLocation, setPrevl }) => { 
+const ChosenCityAutoComplete = ({ 
+  closeKeyboard, 
+  handleClosingSearchModal, 
+  handleClosingModal, 
+  city, 
+  setCity, 
+  lastCityLocation,
+  setLocation, 
+  setPrevl 
+}) => { 
   const [suggestions, setSuggestions] = useState([]);
   const [pressedItemIndex, setPressedItemIndex] = useState(null);
 

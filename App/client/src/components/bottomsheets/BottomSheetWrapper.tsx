@@ -16,7 +16,7 @@ const BottomSheetWrapper = ({ children }: Props) => {
   const [vendor, setVendor] = useState('');
   const [snapIndex, setSnapIndex] = useState(0);
 
-  const snapPoints = useMemo(() => ['14%', '67%', '92%'], []);
+  const snapPoints = useMemo(() => ['13%', '60%', '92%'], []);
 
   const handleSheetChanges = useCallback((index: number) => {
     setSnapIndex(index);
@@ -47,42 +47,42 @@ const BottomSheetWrapper = ({ children }: Props) => {
           <CustomBackdrop {...props} onSelectBackdrop={handleBackdropSelection} />
         )}
       >
-      <TouchableWithoutFeedback onPressIn={Keyboard.dismiss} style={{flex: 1}}>
-        <View style={styles.contentContainer}>
-          <View style={styles.textInputContainer}>
-            <TouchableOpacity onPressIn={snapIndex === 0 ? handleFocus : handleBackdropSelection }>
-              <Icon 
-                name={snapIndex === 0 ? 'search' : 'arrow-back'} 
-                size={25} 
-                color={COLORS.tealwhite} 
-                style={styles.searchIcon} 
-              />
-            </TouchableOpacity>
-            <TextInput
-              ref={textInputRef}
-              placeholder='Search vendor' 
-              placeholderTextColor={'rgba(0, 0, 0, 0.6)'}
-              value={vendor} 
-              autoCapitalize='none' 
-              onChangeText={(text) => setVendor(text)}
-              color={COLORS.royalblue}
-              onFocus={handleFocus}
-              style={styles.textInput}
-              onChangeText={(text) => setVendor(text)}
-              keyboardAppearance='dark'
-            />
-            {vendor.length !== 0 &&
-              <TouchableOpacity onPress={() => setVendor('')}>
-                <Icon name="close" size={25} color={COLORS.tealwhite} style={styles.closeIcon} />
+        <TouchableWithoutFeedback onPressIn={Keyboard.dismiss} style={{flex: 1}}>
+          <View style={styles.contentContainer}>
+            <View style={styles.textInputContainer}>
+              <TouchableOpacity onPressIn={snapIndex === 0 ? handleFocus : handleBackdropSelection }>
+                <Icon 
+                  name={snapIndex === 0 ? 'search' : 'arrow-back'} 
+                  size={25} 
+                  color={COLORS.tealwhite} 
+                  style={styles.searchIcon} 
+                />
               </TouchableOpacity>
-            }
-          </View>
-          <View style={styles.bottomTab}>
-            <View>
-              <Text>Test</Text>
+              <TextInput
+                ref={textInputRef}
+                placeholder='Search vendor' 
+                placeholderTextColor={'rgba(0, 0, 0, 0.6)'}
+                value={vendor} 
+                autoCapitalize='none' 
+                onChangeText={(text) => setVendor(text)}
+                color={COLORS.royalblue}
+                onFocus={handleFocus}
+                style={styles.textInput}
+                onChangeText={(text) => setVendor(text)}
+                keyboardAppearance='dark'
+              />
+              {vendor.length !== 0 &&
+                <TouchableOpacity onPress={() => setVendor('')}>
+                  <Icon name="close" size={25} color={COLORS.tealwhite} style={styles.closeIcon} />
+                </TouchableOpacity>
+              }
             </View>
-          </View>
-        </View> 
+            <View style={styles.bottomTab}>
+              <View>
+                <Text></Text>
+              </View>
+            </View>
+          </View> 
         </TouchableWithoutFeedback>
       </BottomSheet>
     </View>
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.tealwhite,
     borderRadius: 50,
-    marginTop: 5,
+    marginTop: 0,
     width: '100%',
     backgroundColor: COLORS.brightteal
   },

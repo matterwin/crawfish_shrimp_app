@@ -4,8 +4,11 @@ import { COLORS } from "../../constants";
 
 const Dummy2 = () => {
     return(
-        <View style={styles.container}><View><Text> Test Screen 1</Text></View>
+      <View style={styles.container}>
+        <View>
+          <Text> Test Screen 1</Text>
         </View>
+      </View>
     );
 }
 
