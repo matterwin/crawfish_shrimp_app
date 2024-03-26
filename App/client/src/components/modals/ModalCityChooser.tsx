@@ -8,8 +8,7 @@ import SearchPlaces from '../autocompletes/SearchPlaces.tsx';
 
 const ModalCityChooser = ({ setShowModalCityChooser, setCity, city }) => {
   const [modalVisible, setModalVisible] = useState(true);
-  const [lastCityLocation, setLastCityLocation] = useState(city);
-  const [suggestions, setSuggestions] = useState([]);
+  const [lastCityLocation, setLastCityLocation] = useState(city); 
   const textInputRef = useRef<TextInput>(null);
 
   const handleClosingModal = () => {
@@ -32,6 +31,10 @@ const ModalCityChooser = ({ setShowModalCityChooser, setCity, city }) => {
     textInputRef.current?.focus();
   };
 
+  const closeKeyboard = () => {
+    textInputRef.current?.blur();
+  };
+
   return (
     <View style={styles.centeredView}>
       <Modal
@@ -40,45 +43,44 @@ const ModalCityChooser = ({ setShowModalCityChooser, setCity, city }) => {
         visible={modalVisible}
         onRequestClose={handleClosingModal}
       >
-      <BlurView intensity={20} style={{flex: 1}}>
-      <TouchableWithoutFeedback onPress={handleClosingSearchModal}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <View style={styles.textInputContainer}>
-              <TouchableOpacity onPress={handleClosingModal}>
-                <Icon name="arrow-back" size={25} color={COLORS.tealwhite} style={styles.searchIcon} />
-              </TouchableOpacity>
-               <TextInput
-                ref={textInputRef}
-                placeholder='Search city' 
-                placeholderTextColor={'rgba(0, 0, 0, 0.6)'}
-                value={city} 
-                autoCapitalize='none' 
-                onChangeText={(text) => setCity(text)}
-                color={COLORS.royalblue}
-                onFocus={handleFocus}
-                style={styles.textInput}
-                keyboardAppearance='dark'
-                autoFocus={true}
-              />            
-              {city.length !== 0 &&
-                <TouchableOpacity onPress={() => setCity('')}>
-                  <Icon name="close" size={25} color={COLORS.tealwhite} style={styles.closeIcon} />
+        <BlurView intensity={40} style={{flex: 1}}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <View style={styles.textInputContainer}>
+                <TouchableOpacity onPress={handleClosingModal}>
+                  <Icon name="arrow-back" size={25} color={COLORS.tealwhite} style={styles.searchIcon} />
                 </TouchableOpacity>
+                 <TextInput
+                  ref={textInputRef}
+                  placeholder='Search city' 
+                  placeholderTextColor={'rgba(0, 0, 0, 0.6)'}
+                  value={city} 
+                  autoCapitalize='none' 
+                  onChangeText={(text) => setCity(text)} 
+                  color={COLORS.royalblue}
+                  onFocus={handleFocus}
+                  style={styles.textInput}
+                  keyboardAppearance='dark'
+                  autoFocus={true}
+                />            
+                {city.length !== 0 &&
+                  <TouchableOpacity onPress={() => setCity('')}>
+                    <Icon name="close" size={25} color={COLORS.tealwhite} style={styles.closeIcon} />
+                  </TouchableOpacity>
+                }
+              </View> 
+              {city && 
+                <ChosenCityAutoComplete 
+                  closeKeyboard={closeKeyboard}
+                  handleClosingSearchModal={handleClosingSearchModal} 
+                  handleClosingModal={handleClosingModal} 
+                  city={city}
+                  setCity={setCity} 
+                  lastCityLocation={lastCityLocation}
+                />
               }
             </View>
-            
-              <SearchPlaces 
-                handleClosingSearchModal={handleClosingSearchModal} 
-                handleClosingModal={handleClosingModal} 
-                city={city}
-                setCity={setCity} 
-                lastCityLocation={lastCityLocation}
-                setSuggestions={setSuggestions}
-              />  
           </View>
-        </View>
-        </TouchableWithoutFeedback>
         </BlurView>
       </Modal>
      </View>

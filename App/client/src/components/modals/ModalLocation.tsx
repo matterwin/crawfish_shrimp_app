@@ -44,6 +44,8 @@ const ModalLocation = () => {
 
         setLatitude(latitude);
         setLongitude(longitude);
+        console.log(longitude);
+        console.log(latitude);
 
         let region = await Location.reverseGeocodeAsync({
           latitude,
@@ -135,7 +137,7 @@ const ModalLocation = () => {
       <Pressable
         style={[styles.button]}
         onPress={handleOnPress}>
-        <Icon name="pin" size={55} color={COLORS.orange} style={styles.modalIcon} />
+        <Icon name="location-sharp" size={55} color={COLORS.orange} style={styles.modalIcon} />
       </Pressable>
     </View>
   );
@@ -252,10 +254,10 @@ const styles = StyleSheet.create({
     shadowColor: 'pink',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 0,
     },
-    shadowOpacity: 0.6,
-    shadowRadius: 4,
+    shadowOpacity: 0.3,
+    shadowRadius: 0.2,
     elevation: 5,
   },
   closeParentView: {

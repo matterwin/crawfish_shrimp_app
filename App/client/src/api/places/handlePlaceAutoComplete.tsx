@@ -2,12 +2,13 @@ import { GOOGLE_PLACES_API_KEY, GOOGLE_PLACES_AUTOCOMPLETE_API} from "@env";
 
 const baseURL = GOOGLE_PLACES_AUTOCOMPLETE_API;
 
-export const completedResults = async () => {
+export const completedResults = async (city: string) => {
   const queryParams = new URLSearchParams({
-    input: 'Paris',
-    types: 'geocode',
-    key: GOOGLE_PLACES_API_KEY, 
+    input: city,
+    types: '(cities)',
+    components: 'country:us',
     language: 'en',
+    key: GOOGLE_PLACES_API_KEY, 
   });
 
   const url = `${baseURL}?${queryParams.toString()}`;
@@ -19,11 +20,10 @@ export const completedResults = async () => {
      });
 
     const data = await res.json();
-    console.log('Data:', data);
     return { status: res.status, data };
 
   } catch (err) {
-    console.log("error in api call: " + err);
+    console.log("Error in completedResults api function call: " + err);
     return { status: 500, error: err.message };
   }
 };
