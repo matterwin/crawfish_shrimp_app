@@ -1,10 +1,11 @@
 package com.example.crawfish.controller;
 
-import com.example.crawfish.repository.UserRepository;
-import com.example.crawfish.model.User;
+import com.example.crawfish.dto.UserDto;
+import com.example.crawfish.service.UserService;
 
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -12,14 +13,21 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
-  private final UserRepository userRepository;
+  private final UserService userService;
 
-  public UserController(UserRepository userRepository) {
-    this.userRepository = userRepository;
+  public UserController(UserService userService) {
+    this.userService = userService;
   }
 
   @GetMapping("/findAll")
-  List<User> findAll() {
-    return userRepository.findAll();
+  public List<UserDto> findAll() {
+    // Your logic to find all users
+  }
+
+  @ResponseStatus(HttpStatus.CREATED)
+  @PostMapping("/register")
+  public void registerUser(@RequestBody UserDto userDto) {
+    userService.checkIfEmailIsTaken(userDto);
+    // Additional logic to register user
   }
 }
