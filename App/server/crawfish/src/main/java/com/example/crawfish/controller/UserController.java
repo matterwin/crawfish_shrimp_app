@@ -1,6 +1,7 @@
 package com.example.crawfish.controller;
 
 import com.example.crawfish.dto.UserDto;
+import com.example.crawfish.model.User;
 import com.example.crawfish.service.UserService;
 
 import org.springframework.web.bind.annotation.*;
@@ -20,15 +21,15 @@ public class UserController {
     this.userService = userService;
   }
 
-  // @GetMapping("/findAll")
-  // public List<UserDto> findAll() {
-  //   List<UserDto> userDtos = userService.findAll();
-  //   return userDtos;
-  // }
+  @GetMapping("/findAllUsers")
+  public List<UserDto> findAllUsers() {
+    List<UserDto> userDtos = userService.findAllUsers();
+    return userDtos;
+  }
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/register")
-  public void registerUser(@RequestBody UserDto userDto) {
-    userService.registerUser(userDto); 
+  public void registerUser(@RequestBody User user) { 
+    userService.registerUser(user); 
   }
 }

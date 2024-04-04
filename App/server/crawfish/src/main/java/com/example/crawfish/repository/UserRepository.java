@@ -1,6 +1,7 @@
 package com.example.crawfish.repository;
 
 import com.example.crawfish.dto.UserDto;
+import com.example.crawfish.model.User;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
@@ -16,15 +17,15 @@ public class UserRepository {
       this.jdbcClient = jdbcClient;
     }
 
-    // public List<UserDto> findAll() {
-    //   return jdbcClient.sql("SELECT id, username, email FROM users;")
-    //     .query(UserDto.class)
-    //     .list();
-    // }
+    public List<User> findAll() {
+      return jdbcClient.sql("SELECT id, username, email FROM users;")
+        .query(User.class)
+        .list();
+    }
 
-    public void registerUser(UserDto userDto) {
+    public void registerUser(User user) {
       var updated = jdbcClient.sql("INSERT INTO users(id, username, email) VALUES (?, ?, ?);")
-        .params(List.of(userDto.getId(), userDto.getUsername(), userDto.getEmail()))
+        .params(List.of(user.getId(), user.getUsername(), user.getEmail()))
         .update();
       Assert.state(updated == 1, "Failed to create user");
     }

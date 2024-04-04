@@ -6,6 +6,6 @@ import com.example.crawfish.model.User;
 import java.util.List;
 
 public interface UserService {
-  void registerUser(UserDto userDto);
-  /* List<UserDto> findAll(); */
+  void registerUser(User user);
+  List<UserDto> findAllUsers();
 }

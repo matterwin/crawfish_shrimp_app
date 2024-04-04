@@ -2,6 +2,7 @@ package com.example.crawfish.service.impl;
 
 import com.example.crawfish.dto.UserDto;
 import com.example.crawfish.model.User;
+import com.example.crawfish.mapper.UserMapper;
 import com.example.crawfish.repository.UserRepository;
 import com.example.crawfish.service.UserService;
 
@@ -20,18 +21,19 @@ public class UserServiceImpl implements UserService {
     this.userRepository = userRepository;
   }
 
-  // @Override
-  // List<UserDto> findAll() {
-  //   List<User> users = userRepository.findAll();
-  //   return users.stream().map((user) -> mapToUserDto(user)).collect(Collectors.toList()); 
-  // }
-
   @Override
-  public void registerUser(UserDto userDto) {
-    int emailTaken = userRepository.isEmailTaken(userDto.getEmail());
+  public void registerUser(User user) {
+    int emailTaken = userRepository.isEmailTaken(user.getEmail());
     if (emailTaken > 0) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email is already taken");
     }
-    userRepository.registerUser(userDto);
+    userRepository.registerUser(user);
+  }
+
+   public List<UserDto> findAllUsers() {
+    List<User> users = userRepository.findAll();
+    return users.stream()
+      .map(UserMapper::mapToUserDto)
+      .collect(Collectors.toList());
   }
 }
