@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
   public void registerUser(User user) {
     int emailTaken = userRepository.isEmailTaken(user.getEmail());
     if (emailTaken > 0) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email is already taken");
+      throw new ResponseStatusException(400, "Email is already taken");
     }
     userRepository.registerUser(user);
   }
