@@ -1,0 +1,52 @@
+# Auth
+
+backend will receive firebase json obj when a user registers or signs in
+
+the json obj info that will be stored in the postgresql will be the users email, username, user UID.
+Only the email and user UID will be stored granted by firebase.
+The password will be only stored on firebase, so if a user wants to change password, you would handle that 
+through firebase and not through the postgresql db.
+
+The user must first verify their email before being permitted to use the app.
+
+To authenticate the user, they must of course make an account and verify their account.
+So, the user would send their jwt to backend, where the backend would verify jwt, and possibly verify the if 
+their email is verified as well.
+
+Idk what would be faster, always decoding the jwt and check if the email is verified through firebase.
+Or create just a column of the user table for verified email, where if the user sends their jwt 
+we would find their tuple via email address and see if their verified email column is set to true.
+
+If not return email not verified message, and on frontend force them to verify or since the api is decoupled, 
+then send a msg back saying email has been sent to verify email address.
+
+More to points about this topic:
+- if we are already decoding the jwt from the start, then just checking if the email is verified is the 
+best option for less querying to db i.e. less time and money spent potentially
+- since our spring db is not connected with our frontend, we can't really have a persistent userdto containing
+such info provided in the token, so we would have to decode the jwt all the time or actually, we can just send 
+the user's creds with req body (which is the best way to go) but we still have to decoded and verify jwt
+
+- also to patch up the potential "hack" of users sending in a random email address and a valid jwt, 
+we would have to check if that jwt contains the matching email address of what the user sent 
+manually and what is in the jwt, if it doesn't then return such error msg
+
+- maybe instead of checking if email matches, we check if the user UID matches, but that means we would also send and store the user UID in the frontend, which is uhh meh
+
+Receive and Validate JWT: 
+Whenever a user performs an authenticated action (e.g., accessing a protected resource or making a request), your backend should receive the JWT sent by the client (typically included in the Authorization header) and validate its authenticity. This includes checking the signature, expiration time, and any other relevant claims to ensure the JWT is valid.
+
+Decode JWT and Extract Claims: 
+Once the JWT is validated, decode it to extract the claims (e.g., user ID, email, roles). Verify that the email claim matches the user's actual email stored in your database or associated with their account.
+
+Check Email Verification Status: 
+If your JWT includes the email verification status (which is often the case with services like Firebase Authentication), extract this information from the JWT and verify that the email is indeed verified before allowing access to certain actions or resources.
+
+Perform Action if Valid: 
+If the JWT is valid, matches the expected user, and the email is verified, proceed with the authenticated action requested by the user.
+
+
+
+
+
+

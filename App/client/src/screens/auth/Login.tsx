@@ -50,7 +50,7 @@ const Login = () => {
                 }
             </KeyboardAvoidingView>
         </View>
-    )
+    );
 }
 
 export default Login

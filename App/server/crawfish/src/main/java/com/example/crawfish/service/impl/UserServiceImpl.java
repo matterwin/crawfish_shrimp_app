@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     userRepository.registerUser(user);
   }
 
-   public List<UserDto> findAllUsers() {
+  public List<UserDto> findAllUsers() {
     List<User> users = userRepository.findAll();
     return users.stream()
       .map(UserMapper::mapToUserDto)

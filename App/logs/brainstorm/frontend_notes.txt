@@ -1,0 +1,10 @@
+# Future features
+
+- allow users to upload or create locations for selling crawfish and/or shrimp
+- it would be similar to waze alerts
+- the user-uploaded locations will set their price and setup spot (longitude and latitude)
+- users can only make comments based on price from the user's uploaded-location, and for each post have only likes and dislikes
+- also have likes and dislikes for user-uploaded locations
+- user-uploaded locations will automatically expire 24hrs after upload, and user will receive email or in-app notification about the expiration date 
+
+
