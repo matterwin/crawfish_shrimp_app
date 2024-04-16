@@ -5,6 +5,7 @@ import { COLORS } from '../../constants';
 import CustomBackdrop from './CustomBackdrop';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ModalLocation from '../modals/ModalLocation.tsx';
+import ModalMainSearch from '../modals/ModalMainSearch.tsx';
 
 type Props = {
   children: JSX.Element | JSX.Element[];
@@ -14,6 +15,7 @@ const BottomSheetWrapper = ({ children }: Props) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const textInputRef = useRef<TextInput>(null);
   const [vendor, setVendor] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
   const [snapIndex, setSnapIndex] = useState(0);
 
   const snapPoints = useMemo(() => ['13%', '60%', '92%'], []);
@@ -23,12 +25,14 @@ const BottomSheetWrapper = ({ children }: Props) => {
   }, []);
 
   const handleFocus = () => {
+    setModalVisible(true);
+    Keyboard.dismiss();
     bottomSheetRef.current?.snapToIndex(2);
-    textInputRef.current?.focus();
   };
 
   const handleBackdropSelection = useCallback(() => {
     bottomSheetRef.current?.snapToIndex(0);
+    setModalVisible(false);
     Keyboard.dismiss();
   }, []);
 
@@ -52,7 +56,7 @@ const BottomSheetWrapper = ({ children }: Props) => {
             <View style={styles.textInputContainer}>
               <TouchableOpacity onPressIn={snapIndex === 0 ? handleFocus : handleBackdropSelection }>
                 <Icon 
-                  name={snapIndex === 0 ? 'search' : 'arrow-back'} 
+                  name={snapIndex === 0 ? 'search' : 'search'} 
                   size={25} 
                   color={COLORS.tealwhite} 
                   style={styles.searchIcon} 
@@ -71,19 +75,20 @@ const BottomSheetWrapper = ({ children }: Props) => {
                 onChangeText={(text) => setVendor(text)}
                 keyboardAppearance='dark'
               />
-              {vendor.length !== 0 &&
-                <TouchableOpacity onPress={() => setVendor('')}>
-                  <Icon name="close" size={25} color={COLORS.tealwhite} style={styles.closeIcon} />
-                </TouchableOpacity>
-              }
             </View>
             <View style={styles.bottomTab}>
               <View>
-                <Text></Text>
+                <Text>Testing</Text>
               </View>
             </View>
           </View> 
         </TouchableWithoutFeedback>
+        <ModalMainSearch
+          setModalVisible={setModalVisible}
+          modalVisible={modalVisible}
+          setSnapIndex={setSnapIndex}
+          snapToIndex={bottomSheetRef.current?.snapToIndex}
+        />      
       </BottomSheet>
     </View>
   );
@@ -100,7 +105,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'flex-start',
     paddingHorizontal: 15,
-    backgroundColor: '#1e4147',
+    backgroundColor: COLORS.teal,
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     position: 'relative',
