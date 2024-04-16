@@ -40,8 +40,6 @@ return (
   );
 }
 
-
-
 export default AppWrapper;
 
 const styles = StyleSheet.create({

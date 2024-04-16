@@ -7,4 +7,7 @@
 - also have likes and dislikes for user-uploaded locations
 - user-uploaded locations will automatically expire 24hrs after upload, and user will receive email or in-app notification about the expiration date 
 
-
+- frontend will have filter buttons
+- frontpage will display both live and boiled for both shrimp and crawfish
+- a focused vendor would show all it details combined, i.e. including shrimp & crawfish
+- prices would be after details  
