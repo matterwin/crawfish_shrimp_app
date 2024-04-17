@@ -6,7 +6,7 @@ import FlatListMainFeed from '../../components/flatlists/FlatListMainFeed.tsx';
 
 const Dummy3 = () => {
   return(
-    <View style={styles.container} >
+    <View style={styles.container}>
       <FlatListMainFeed />
     </View>
   );
@@ -17,6 +17,6 @@ export default Dummy3;
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: COLORS.deepgreen
+      backgroundColor: COLORS.deepgreen,
     },
 });
