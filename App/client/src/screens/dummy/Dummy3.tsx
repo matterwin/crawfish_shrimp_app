@@ -15,8 +15,8 @@ const Dummy3 = () => {
 export default Dummy3;
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: COLORS.deepgreen,
-    },
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.tealwhite,
+  },
 });

@@ -1,6 +1,7 @@
 import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { COLORS } from '../../constants/index.tsx';
+import IconContainer from '../../components/iconContainers/IconContainer.tsx';
 
 type Item = {
   id: string;
@@ -10,22 +11,23 @@ type Item = {
   stars: string;
   boilPrice?: string;
   livePrice?: string;
+  size: string;
 };
 
 const DATA: Item[] = [
-  { id: '1', title: 'Tiger Paw Grill & Daiquiris', dist: '8.76 mi', address: '13711 COursey Blvd. Suite B', stars: '4.5', boilPrice: '4.32', livePrice: '' },
-  { id: '2', title: 'Tiger Paw Grill & Daiquiris', dist: '5.76 mi', address: '13711 COursey Blvd. Suite B', stars: '2.0', boilPrice: '4.53', livePrice: '294.53' },
-  { id: '3', title: 'Tiger Paw Grill & Daiquiris', dist: '4.76 mi', address: '13711 COursey Blvd. Suite B', stars: '1.1', boilPrice: '4.3', livePrice: '4.53' },
-  { id: '4', title: 'Tiger Paw Grill & Daiquiris', dist: '3.76 mi', address: '13711 COursey Blvd. Suite B', stars: '3.0', boilPrice: '4.23', livePrice: '4.53' },
-  { id: '5', title: 'Tiger Paw Grill & Daiquiris', dist: '2.76 mi', address: '13711 COursey Blvd. Suite B', stars: '4.2', boilPrice: '4.23', livePrice: '4.53' },
-  { id: '6', title: 'Tiger Paw Grill & Daiquiris', dist: '2.76 mi', address: '13711 COursey Blvd. Suite B', stars: '4.2', boilPrice: '4.43', livePrice: '4.53' },
-  { id: '7', title: 'Tiger Paw Grill & Daiquiris', dist: '2.76 mi', address: '13711 COursey Blvd. Suite B', stars: '4.2', boilPrice: '1.33', livePrice: '4.53' },
-  { id: '8', title: 'Tiger Paw Grill & Daiquiris', dist: '2.76 mi', address: '13711 COursey Blvd. Suite B', stars: '4.2', boilPrice: '2.53', livePrice: '4.53' },
-  { id: '9', title: 'Tiger Paw Grill & Daiquiris', dist: '2.76 mi', address: '13711 COursey Blvd. Suite B', stars: '4.2', boilPrice: '3.53', livePrice: '' }
+  { id: '1', title: 'Tiger Paw Grill & Daiquiris and drivers dine and in', dist: '8.76', address: '13711 COursey Blvd. Suite B', stars: '4.5', boilPrice: '4.32', livePrice: '' },
+  { id: '2', title: 'Tiger Paw Grill & Daiquiris', dist: '5.76', address: '13711 COursey Blvd. Suite B', stars: '2.0', boilPrice: '4.53', livePrice: '294.53' },
+  { id: '3', title: 'Tiger Paw Grill & Daiquiris', dist: '4.76', address: '13711 COursey Blvd. Suite B', stars: '1.1', boilPrice: '4.3', livePrice: '4.53' },
+  { id: '4', title: 'Tiger Paw Grill & Daiquiris', dist: '3.76', address: '13711 COursey Blvd. Suite B', stars: '3.0', boilPrice: '4.23', livePrice: '4.53' },
+  { id: '5', title: 'Tiger Paw Grill & Daiquiris', dist: '2.76', address: '13711 COursey Blvd. Suite B', stars: '4.2', boilPrice: '4.23', livePrice: '4.53' },
+  { id: '6', title: 'Tiger Paw Grill & Daiquiris', dist: '2.76', address: '13711 COursey Blvd. Suite B', stars: '4.2', boilPrice: '4.43', livePrice: '4.53' },
+  { id: '7', title: 'Tiger Paw Grill & Daiquiris', dist: '2.76', address: '13711 COursey Blvd. Suite B', stars: '4.2', boilPrice: '1.33', livePrice: '4.53' },
+  { id: '8', title: 'Tiger Paw Grill & Daiquiris', dist: '2.76', address: '13711 COursey Blvd. Suite B', stars: '4.2', boilPrice: '2.53', livePrice: '4.53' },
+  { id: '9', title: 'Tiger Paw Grill & Daiquiris', dist: '2.76', address: '13711 COursey Blvd. Suite B', stars: '4.2', boilPrice: '3.53', livePrice: '' }
 ];
 
 
-const BoxPrice = ({ price, priceType }: { price?: string; priceType: 'Boil' | 'Live' }) => {
+const BoxPrice = ({ price, priceType }: { price?: string; priceType: 'Boiled' | 'Live' }) => {
   const formattedPrice = price !== '' ? `${price}` : 'N/A';
 
   return (
@@ -35,7 +37,7 @@ const BoxPrice = ({ price, priceType }: { price?: string; priceType: 'Boil' | 'L
           <Text style={styles.priceText}>{formattedPrice}</Text>
         </View>
       </View>
-      <View style={{ backgroundColor: '#ccc', width: '100%', alignItems: 'center', justifyContent: 'center', borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}>
+      <View style={styles.priceTypeView}>
         <View>
           <Text style={{ fontSize: 13 }}>{priceType}</Text>
         </View>
@@ -48,15 +50,27 @@ const BoxPrice = ({ price, priceType }: { price?: string; priceType: 'Boil' | 'L
 const ItemComponent = ({ item, isFirst, isLast }: { item: Item; isFirst: boolean; isLast: boolean }) => (
   <View style={[styles.item, isFirst && styles.firstItem, isLast && styles.lastItem]}>
     <Text style={styles.title}>{item.title}</Text>
+    <View style={styles.descriptionView}>
+      <Text style={{ color: 'white' }}>{`${item.dist} mi`}</Text>
+    </View>
     <View style={styles.detailsView}>
       <View style={styles.itemDetailsView}>
-        <Text>{`Distance: ${item.dist}`}</Text>
-        <Text>{`Stars: ${item.stars}`}</Text>
-        <Text>{`Address: ${item.address}`}</Text>
+        <Text style={styles.infoText}>{`${item.stars}/5`}</Text>
+        <Text style={styles.infoText}>{`${item.address}`}</Text>
       </View>
-      <View style={styles.boxPricesItemView}>
-        <BoxPrice price={item.boilPrice} priceType="Boil" />
-        <BoxPrice price={item.livePrice} priceType="Live" />
+      <View style={styles.backgroundContainer}>
+        <View style={styles.iconContainer}>
+          <IconContainer  />
+        </View>
+        <View style={styles.boxPricesContainer}>
+          <View style={styles.boxPricesItemView}>
+            <BoxPrice price={item.boilPrice} priceType="Boiled" />
+            <BoxPrice price={item.livePrice} priceType="Live" />
+          </View>
+          <View style={styles.descriptionView}>
+            <Text style={{ color: 'white' }}>Small</Text>
+          </View>
+        </View>
       </View>
     </View>
   </View>
@@ -91,11 +105,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   item: {
-    backgroundColor: 'transparent',
+    backgroundColor: COLORS.tealwhite,
     padding: 20,
-    // marginVertical: 8,
     borderBottomWidth: 1,
-    paddingBottom: 50,
+    // paddingBottom: 50,
     borderColor: COLORS.teal
   },
   firstItem: {
@@ -107,20 +120,24 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: '600',
-    color: 'white'
+    color: 'white',
+    width: '70%',
+    paddingBottom: 5,
   },
   detailsView: {
-    padding: 20,
-    marginLeft: 50,
-    marginRight: 50,
+    paddingVertical: 20,
+    // marginLeft: 50,
+    // marginRight: 50,
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center'
+    alignItems: 'space-evenly',
+    justifyContent: 'space-evenly',
+    // backgroundColor: 'red',
   },
   itemDetailsView: {
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
+    width: '50%'
   },
   boxPriceView: {
     width: 60,
@@ -141,15 +158,52 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  boxPricesContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: 5,
+    justifyContent: 'flex-start',
+  },
+  descriptionView: {
+    padding: 5,
+    paddingLeft: 8,
+    paddingRight: 8,
+    backgroundColor: 'rgba(50, 168, 98, 0.4)',
+    borderRadius: '10%',
+    borderColor: COLORS.green,
+    borderWidth: 1,
+    // width: '30%'
+  },
+  priceTypeView: {
+    backgroundColor: '#ccc',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+  },
   boxPricesItemView: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
   },
   priceText: {
     color: COLORS.deepgreen,
     fontSize: 16
+  },
+  backgroundContainer: {
+    position: 'relative',
+    width: '50%',
+    alignItems: 'center',
+  },
+  iconContainer: {
+    position: 'absolute',
+    top: -50,
+    zIndex: -1,  
+  },
+  infoText: {
+    color: COLORS.white,
   },
 });
 

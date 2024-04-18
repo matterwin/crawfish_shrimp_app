@@ -15,7 +15,7 @@ const FoodNav = () => {
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={[styles.container, { paddingTop: 0 }]}>
+    <View style={[styles.container, {}]}>
       <Tab.Navigator
         initialRouteName="Dummy2"
         screenOptions={() => ({
@@ -51,7 +51,7 @@ export default FoodNav;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: COLORS.deepgreen,
+    backgroundColor: COLORS.green
     // backgroundColor: 'transparent'
   },
   linearGradient: {
