@@ -14,53 +14,54 @@ type Props = {
 const BottomSheetVendor = ({ children, selectedItem }: Props & { selectedItem: Item }) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [snapIndex, setSnapIndex] = useState(0);
-  const [snapIndexForReviews, setSnapIndexForReviews] = useState(0);
+  const [snapIndexForReviews, setSnapIndexForReviews] = useState(-1);
   const [item, setItem] = useState(selectedItem);
 
   const snapPoints = useMemo(() => ['13%', '70%', '85%'], []);
 
   const handleSheetChanges = useCallback((index: number) => {
-    setSnapIndex(index);
+    setSnapIndex(index-1);
   }, []);
 
   const handleSetSnapIndexForReviews = () => {
-    setSnapIndexForReviews(1);
+    setSnapIndexForReviews(snapIndex);
   };
 
   return (
-    <View style={styles.container}>
-      {children} 
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={1}
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}
-        handleStyle={{ marginBottom: -3, borderRadius: 15, }}
-        backgroundStyle={{ backgroundColor: COLORS.teal, borderRadius: 15, borderWidth: 1, borderColor: COLORS.tealwhite }}
-        handleIndicatorStyle={{ backgroundColor: COLORS.brightteal, width: 60, height: 6  }} 
-      >
-        <View style={styles.sheetContainer}>
-          <Rating
-            type='custom'
-            ratingCount={5}
-            readonly
-            tintColor={COLORS.teal} 
-            startingValue={3}
-            imageSize={30}
-            ratingColor={COLORS.green}
-            style={{ marginTop: -3 }}
-            ratingBackgroundColor={COLORS.tealwhite}
-          />
-          <View style={styles.titleView}>
-            <Text style={styles.titleText}>{item.title}</Text>
+    <BottomSheetReviews selectedItem={selectedItem} snapIndex={snapIndexForReviews} setSnapIndex={setSnapIndexForReviews}>
+      <View style={styles.container}>
+        {children} 
+        <BottomSheet
+          ref={bottomSheetRef}
+          index={1}
+          snapPoints={snapPoints}
+          onChange={handleSheetChanges}
+          handleStyle={{ marginBottom: -3, borderRadius: 15, }}
+          backgroundStyle={{ backgroundColor: COLORS.teal, borderRadius: 15, borderWidth: 1, borderColor: COLORS.tealwhite }}
+          handleIndicatorStyle={{ backgroundColor: COLORS.brightteal, width: 60, height: 5 }} 
+        >
+          <View style={styles.sheetContainer}>
+            <Rating
+              type='custom'
+              ratingCount={5}
+              readonly
+              tintColor={COLORS.teal} 
+              startingValue={3}
+              imageSize={30}
+              ratingColor={COLORS.green}
+              style={{ marginTop: -3 }}
+              ratingBackgroundColor={COLORS.tealwhite}
+            />
+            <View style={styles.titleView}>
+              <Text style={styles.titleText}>{item.title}</Text>
+            </View>
+            <TouchableOpacity style={styles.reviewsView} onPress={handleSetSnapIndexForReviews}>
+              <Text style={styles.reviewsText}>Reviews  (1)</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.reviewsView} onPress={handleSetSnapIndexForReviews}>
-            <Text style={styles.reviewsText}>Reviews  (1)</Text>
-          </TouchableOpacity>
-        </View>
-                  <BottomSheetReviews selectedItem={selectedItem} snapIndex={snapIndexForReviews} setSnapIndex={setSnapIndexForReviews}/>
-      </BottomSheet>
-    </View>
+        </BottomSheet>
+      </View>
+    </BottomSheetReviews>
   );
 };
 
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     margin: 15,
     backgroundColor: COLORS.grey,
-    borderRadius: 10,
+    borderRadius: 15,
     padding: 20,
   },
   reviewsText: {

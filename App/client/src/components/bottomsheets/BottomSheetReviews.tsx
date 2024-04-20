@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useRef, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetBackdrop, BottomSheetFooter } from "@gorhom/bottom-sheet";
 import { COLORS } from '../../constants';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Stars from '../ratings/Stars.tsx';
@@ -14,11 +14,35 @@ const BottomSheetReviews = ({ children, selectedItem, snapIndex, setSnapIndex }:
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [item, setItem] = useState(selectedItem);
 
-  const snapPoints = useMemo(() => ['1%', '100%'], []);
+  const snapPoints = useMemo(() => ['70%', '85%'], []);
 
   const handleSheetChanges = useCallback((index: number) => {
     setSnapIndex(index);
   }, []);
+
+  const renderBackdrop = useCallback(
+		(props) => (
+			<BottomSheetBackdrop
+				{...props}
+        closeOnPress={true}
+        enableTouchThrough={true}
+        disappearsOnIndex={-1}
+        appearsOnIndex={1}
+			/>
+		),
+		[]
+	);
+
+  const renderFooter = useCallback(
+    props => (
+      <BottomSheetFooter {...props} bottomInset={24}>
+        <View style={styles.footerContainer}>
+          <Text style={styles.footerText}>Footer</Text>
+        </View>
+      </BottomSheetFooter>
+    ),
+    []
+  );
 
   return (
     <View style={styles.container}>
@@ -31,7 +55,9 @@ const BottomSheetReviews = ({ children, selectedItem, snapIndex, setSnapIndex }:
         onChange={handleSheetChanges}
         handleStyle={{ marginBottom: -3, borderRadius: 15, }}
         backgroundStyle={{ backgroundColor: COLORS.teal, borderRadius: 15, borderWidth: 1, borderColor: COLORS.tealwhite }}
-        handleIndicatorStyle={{ backgroundColor: COLORS.brightteal, width: 60, height: 6  }} 
+        handleIndicatorStyle={{ backgroundColor: COLORS.brightteal, width: 60, height: 5 }} 
+        backdropComponent={renderBackdrop}
+        footerComponent={renderFooter}
       >
         <View style={styles.sheetContainer}> 
           <View style={styles.titleView}>
