@@ -34,12 +34,12 @@ const VendorNav = ({ navigation, route }) => {
           ),
           headerRight: () => (
             <View style={{ marginRight: 15, width: '100%' }}>
-              <View style={[styles.header, { width: '100%' }]} onTouchEnd={() => console.log("touched")}>
+              <TouchableOpacity style={[styles.header, { width: '100%' }]} onTouchEnd={() => console.log("touched")}>
                 <View style={styles.headerRight}>
                   <Text style={styles.dirText}>Directions</Text>
                   <Icon name="car" style={{ margin: 0, padding: 0 }} size={26} color={COLORS.white} />
                 </View>
-              </View>
+              </TouchableOpacity>
             </View>
           ),
         }}
