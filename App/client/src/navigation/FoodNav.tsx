@@ -5,6 +5,7 @@ import { COLORS } from '../constants';
 import { useNavigation } from '@react-navigation/native';
 import Dummy2 from '../screens/dummy/Dummy2.tsx';
 import Dummy3 from '../screens/dummy/Dummy3.tsx';
+import Dummy4 from '../screens/dummy/Dummy4.tsx';
 import ProfileBottomSheetModal from '../components/ProfileBottomSheetModal.tsx';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -19,6 +20,7 @@ const FoodNav = () => {
       <Tab.Navigator
         initialRouteName="Dummy2"
         screenOptions={() => ({
+          headerTransparent: true,
           tabBarGap: 0,
           tabBarStyle: {
             width: 200, 
@@ -51,7 +53,7 @@ export default FoodNav;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.green
+    // backgroundColor: COLORS.green
     // backgroundColor: 'transparent'
   },
   linearGradient: {

@@ -1,11 +1,16 @@
 import React from "react";
 import { SafeAreaView, Button, Text, View, StyleSheet } from "react-native";
 import { COLORS } from "../../constants";
+import BottomSheetVendor from '../../components/bottomsheets/BottomSheetVendor.tsx';
 
-const Dummy4 = () => {
-    return(
-        <View style={styles.container}><Text> Profile Screen</Text></View>
-    );
+const Dummy4 = ({ selectedItem }) => {
+  return(
+    <BottomSheetVendor selectedItem={selectedItem}>
+      <View style={styles.container}>
+        <Text> Profile Screen</Text>
+      </View>
+    </BottomSheetVendor>
+  );
 }
 
 export default Dummy4;

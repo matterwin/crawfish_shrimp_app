@@ -5,7 +5,7 @@ import Dummy4 from '../screens/dummy/Dummy4.tsx';
 
 const Stack = createStackNavigator();
 
-function ProfileNav() {
+const ProfileNav = () => {
   return (
     <Stack.Navigator initialRouteName='Dummy4'>
       <Stack.Screen name={"Dummy4"} component={Dummy4} options={{ headerShown: false }}/>

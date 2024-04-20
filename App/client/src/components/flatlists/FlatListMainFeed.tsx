@@ -1,7 +1,8 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View, TouchableOpacity, Pressable} from 'react-native';
 import { COLORS } from '../../constants/index.tsx';
 import IconContainer from '../../components/iconContainers/IconContainer.tsx';
+import { useNavigation } from '@react-navigation/native';
 
 type Item = {
   id: string;
@@ -47,34 +48,44 @@ const BoxPrice = ({ price, priceType }: { price?: string; priceType: 'Boiled' | 
 };
 
 
-const ItemComponent = ({ item, isFirst, isLast }: { item: Item; isFirst: boolean; isLast: boolean }) => (
-  <View style={[styles.item, isFirst && styles.firstItem, isLast && styles.lastItem]}>
-    <Text style={styles.title}>{item.title}</Text>
-    <View style={styles.descriptionView}>
-      <Text style={{ color: 'white' }}>{`${item.dist} mi`}</Text>
-    </View>
-    <View style={styles.detailsView}>
-      <View style={styles.itemDetailsView}>
-        <Text style={styles.infoText}>{`${item.stars}/5`}</Text>
-        <Text style={styles.infoText}>{`${item.address}`}</Text>
-      </View>
-      <View style={styles.backgroundContainer}>
-        <View style={styles.iconContainer}>
-          <IconContainer  />
+const ItemComponent = ({ item, isFirst, isLast }: { item: Item; isFirst: boolean; isLast: boolean }) => {
+  const navigation = useNavigation();
+
+  const handlePress = () => {
+    navigation.navigate('VendorNav', { selectedItem: item });
+  };
+
+  return (
+    <TouchableOpacity onPress={handlePress}>
+      <View style={[styles.item, isFirst && styles.firstItem, isLast && styles.lastItem]}>
+        <Text style={styles.title}>{item.title}</Text>
+        <View style={styles.descriptionView}>
+          <Text style={{ color: 'white' }}>{`${item.dist} mi`}</Text>
         </View>
-        <View style={styles.boxPricesContainer}>
-          <View style={styles.boxPricesItemView}>
-            <BoxPrice price={item.boilPrice} priceType="Boiled" />
-            <BoxPrice price={item.livePrice} priceType="Live" />
+        <View style={styles.detailsView}>
+          <View style={styles.itemDetailsView}>
+            <Text style={styles.infoText}>{`${item.stars}/5`}</Text>
+            <Text style={styles.infoText}>{`${item.address}`}</Text>
           </View>
-          <View style={styles.descriptionView}>
-            <Text style={{ color: 'white' }}>Small</Text>
+          <View style={styles.backgroundContainer}>
+            <View style={styles.iconContainer}>
+              <IconContainer  />
+            </View>
+            <View style={styles.boxPricesContainer}>
+              <View style={styles.boxPricesItemView}>
+                <BoxPrice price={item.boilPrice} priceType="Boiled" />
+                <BoxPrice price={item.livePrice} priceType="Live" />
+              </View>
+              <View style={styles.descriptionView}>
+                <Text style={{ color: 'white' }}>Small</Text>
+              </View>
+            </View>
           </View>
         </View>
       </View>
-    </View>
-  </View>
-);
+    </TouchableOpacity>
+  );
+};
 
 const FlatListMainFeed = () => {
   const renderItem = ({ item, index }: { item: Item; index: number }) => (

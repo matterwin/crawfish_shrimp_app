@@ -5,7 +5,7 @@ import Dummy from '../screens/dummy/Dummy.tsx';
 
 const Stack = createStackNavigator();
 
-function BottomNav() {
+const BottomNav = () => {
   return (
     <Stack.Navigator initialRouteName='Dummy'>
       <Stack.Screen name={"Dummy"} component={Dummy} options={{ headerShown: false }}/>
