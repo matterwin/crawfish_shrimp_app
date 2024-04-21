@@ -46,7 +46,7 @@ const BottomSheetWrapper = ({ children }: Props) => {
         onChange={handleSheetChanges}
         handleStyle={{ marginBottom: 0, borderRadius: 15 }}
         backgroundStyle={{ backgroundColor: COLORS.teal, borderRadius: 15, borderWidth: 1, borderColor: COLORS.tealwhite }}
-        handleIndicatorStyle={{ backgroundColor: COLORS.brightteal, width: 60, height: 5 }}
+        handleIndicatorStyle={{ backgroundColor: COLORS.brightteal, width: 60, height: 4 }}
         backdropComponent={(props) => (
           <CustomBackdrop {...props} onSelectBackdrop={handleBackdropSelection} />
         )}

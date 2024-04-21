@@ -9,7 +9,7 @@ type Props = {
   children: JSX.Element | JSX.Element[];
 }
 
-const BottomSheetReviews = ({ children, selectedItem, snapIndex, setSnapIndex }: Props & { selectedItem: Item, snapIndex: number }) => {
+const BottomSheetPrices = ({ children, selectedItem, snapIndex, setSnapIndex }: Props & { selectedItem: Item, snapIndex: number }) => {
   const textInputRef = useRef<TextInput>(null);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [item, setItem] = useState(selectedItem);
@@ -82,7 +82,7 @@ const BottomSheetReviews = ({ children, selectedItem, snapIndex, setSnapIndex }:
       >
         <View style={styles.sheetContainer}> 
           <View style={styles.titleView}>
-            <Text style={styles.titleText}>Reviews</Text>
+            <Text style={styles.titleText}>Boil Prices</Text>
           </View>
         </View>
       </BottomSheet>
@@ -90,7 +90,7 @@ const BottomSheetReviews = ({ children, selectedItem, snapIndex, setSnapIndex }:
   );
 };
 
-export default BottomSheetReviews;
+export default BottomSheetPrices;
 
 const styles = StyleSheet.create({
   container: {
@@ -180,6 +180,7 @@ const styles = StyleSheet.create({
     paddingLeft: 0
   },
 });
+
 
 
 

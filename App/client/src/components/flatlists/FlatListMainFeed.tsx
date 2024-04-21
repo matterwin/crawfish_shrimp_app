@@ -16,7 +16,7 @@ type Item = {
 };
 
 const DATA: Item[] = [
-  { id: '1', title: 'Tiger Paw Grill & Daiquiris and drivers dine and in', dist: '8.76', address: '13711 COursey Blvd. Suite B', stars: '4.5', boilPrice: '4.32', livePrice: '' },
+  { id: '1', title: 'Tiger Paw Grill & Daiquiris and drivers dine and in', dist: '8.76', address: '13711 COursey Blvd. Suite B', stars: '4.50', boilPrice: '4.32', livePrice: '' },
   { id: '2', title: 'Tiger Paw Grill & Daiquiris', dist: '5.76', address: '13711 COursey Blvd. Suite B', stars: '2.0', boilPrice: '4.53', livePrice: '294.53' },
   { id: '3', title: 'Tiger Paw Grill & Daiquiris', dist: '4.76', address: '13711 COursey Blvd. Suite B', stars: '1.1', boilPrice: '4.3', livePrice: '4.53' },
   { id: '4', title: 'Tiger Paw Grill & Daiquiris', dist: '3.76', address: '13711 COursey Blvd. Suite B', stars: '3.0', boilPrice: '4.23', livePrice: '4.53' },
