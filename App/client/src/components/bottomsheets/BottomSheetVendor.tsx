@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView, Keyboard, TouchableOpacity, Pressable } from 'react-native';
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { COLORS } from '../../constants';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -8,6 +8,7 @@ import { Rating, AirbnbRating } from 'react-native-ratings';
 import BottomSheetReviews from './BottomSheetReviews.tsx';
 import BottomSheetPrices from './BottomSheetPrices.tsx';
 import CircleIconContainer from '../iconContainers/CircleIconContainer.tsx';
+import * as Haptics from 'expo-haptics';
 
 type Props = {
   children: JSX.Element | JSX.Element[];
@@ -19,6 +20,11 @@ const BottomSheetVendor = ({ children, selectedItem }: Props & { selectedItem: I
   const [snapIndexForReviews, setSnapIndexForReviews] = useState(-1);
   const [snapIndexForPrices, setSnapIndexForPrices] = useState(-1);
   const [item, setItem] = useState(selectedItem);
+  const [isPressed, setIsPressed] = useState(false);
+  const [isPressedIn, setIsPressedIn] = useState(false);
+
+  const [isPressedPrices, setIsPressedPrices] = useState(false);
+  const [pressedPriceId, setPressedPriceId] = useState(-1);
 
   const snapPoints = useMemo(() => ['13%', '70%', '85%'], []);
 
@@ -27,18 +33,40 @@ const BottomSheetVendor = ({ children, selectedItem }: Props & { selectedItem: I
   }, []);
 
   const handleSetSnapIndexForReviews = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setSnapIndexForReviews(snapIndex);
+    handlePress();
+  } 
+
+  const handlePress = () => {
+    setIsPressed(true);
+    setIsPressedIn(false);
+    setTimeout(() => {
+      setIsPressed(false);
+    }, 30);
   };
 
-  const handleSetSnapIndexForPrices = () => {
+  const handlePressPrices = () => {
+    setIsPressedPrices(true);
+    setTimeout(() => {
+      setIsPressedPrices(false);
+    }, 30);
+  };
+
+  const handleSetSnapIndexForPrices = (id: number) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    setPressedPriceId(id);
     setSnapIndexForPrices(snapIndex);
+    handlePressPrices();
   };
   
-  const PriceBox = ({ item, food, type, handleSetSnapIndexForPrices }) => {
-    // need to display 'N/A' for price and 'Empty' for the latest price update if the price is not there
+  const PriceBox = ({ id, item, food, type, handleSetSnapIndexForPrices }) => {
 
     return (
-      <TouchableOpacity onPress={handleSetSnapIndexForPrices} style={styles.touchableOpacity}>
+      <Pressable 
+        style={styles.touchableOpacity}
+        onPress={() => handleSetSnapIndexForPrices(id)}
+      >
         <View style={styles.rowContainer}>
           <View>
             <Text style={styles.labelText}>
@@ -50,17 +78,28 @@ const BottomSheetVendor = ({ children, selectedItem }: Props & { selectedItem: I
             <CircleIconContainer food={food} />
           </View>
         </View>
-        <View style={[styles.rowContainer, styles.secondRowContainer]}>
-          <View style={styles.rowContent}>
-            <Icon name="chevron-forward-outline" size={15} color="white" />
-            <Text style={styles.labelText}>Latest price update</Text>
+        <View 
+          style={[
+            styles.rowContainer, 
+            styles.secondRowContainer, 
+            pressedPriceId === id && isPressedPrices && { borderColor: COLORS.white, backgroundColor: 'rgba(255, 255, 255, 0.35)' }
+          ]}
+        >
+          <View>
+            <View style={styles.rowContent}>
+              <Icon name="chevron-forward-outline" size={15} color="white" />
+              <View>
+                <Text style={styles.labelText}>Latest price update</Text>
+                <Text style={styles.timeUpdateText}>39 mins ago</Text>
+              </View>
+            </View>
           </View>
           <View style={styles.columnContent}>
             <Text style={styles.secondaryPriceText}>${item.boilPrice}</Text>
             <Text style={styles.secondaryText}>m3ttwin</Text>
           </View>
         </View>
-      </TouchableOpacity>
+      </Pressable>
     );
   };
 
@@ -76,7 +115,7 @@ const BottomSheetVendor = ({ children, selectedItem }: Props & { selectedItem: I
             onChange={handleSheetChanges}
             handleStyle={{ marginBottom: -3, borderRadius: 15, }}
             backgroundStyle={{ backgroundColor: COLORS.teal, borderRadius: 15, borderWidth: 1, borderColor: COLORS.tealwhite }}
-            handleIndicatorStyle={{ backgroundColor: COLORS.brightteal, width: 60, height: 4 }} 
+            handleIndicatorStyle={{ backgroundColor: COLORS.brightteal, width: 30, height: 5 }} 
           >
           <BottomSheetScrollView style={{flex:1}}>
             <View style={styles.sheetContainer}>
@@ -98,16 +137,21 @@ const BottomSheetVendor = ({ children, selectedItem }: Props & { selectedItem: I
                 <Text style={{ color: COLORS.white }}>{item.address}</Text>
                 <Text style={{ color: COLORS.green }}>{item.dist} mi</Text>
               </View>
-              <TouchableOpacity style={styles.reviewsView} onPress={handleSetSnapIndexForReviews}>
-                <Text style={styles.reviewsText}>Reviews  (1)</Text>
-              </TouchableOpacity>
+              <Pressable
+                style={[styles.reviewsView, isPressed && styles.pressed, isPressedIn && { backgroundColor: 'rgba(255, 255, 255, 0.35)' }]}
+                onPress={handleSetSnapIndexForReviews}
+                onPressIn={() => setIsPressedIn(true)}
+                onPressOut={() => setIsPressedIn(false)}
+              >
+                <Text style={styles.reviewsText}>Reviews <Text style={styles.reviewsNumberCountText}>14</Text></Text>
+              </Pressable>
               <View style={{ margin: 15, marginBottom: 0, alignItems: 'center' }}>
                 <Text style={{ color: COLORS.grey }}>Click on the type of price you want to update or visit</Text>
               </View>
-              <PriceBox item={item} food={"crawfish"} type={"Boiled"} handleSetSnapIndexForPrices={handleSetSnapIndexForPrices} />
-              <PriceBox item={item} food={"crawfish"} type={"Live"} handleSetSnapIndexForPrices={handleSetSnapIndexForPrices} />
-              <PriceBox item={item} food={"shrimp"} type={"Boiled"} handleSetSnapIndexForPrices={handleSetSnapIndexForPrices} />
-              <PriceBox item={item} food={"shrimp"} type={"Live"} handleSetSnapIndexForPrices={handleSetSnapIndexForPrices} />
+              <PriceBox id={1} item={item} food={"crawfish"} type={"Boiled"} handleSetSnapIndexForPrices={handleSetSnapIndexForPrices} />
+              <PriceBox id={2} item={item} food={"crawfish"} type={"Live"} handleSetSnapIndexForPrices={handleSetSnapIndexForPrices} />
+              <PriceBox id={3} item={item} food={"shrimp"} type={"Boiled"} handleSetSnapIndexForPrices={handleSetSnapIndexForPrices} />
+              <PriceBox id={4} item={item} food={"shrimp"} type={"Live"} handleSetSnapIndexForPrices={handleSetSnapIndexForPrices} />
             </View>
             </BottomSheetScrollView>
           </BottomSheet>
@@ -148,9 +192,15 @@ const styles = StyleSheet.create({
   reviewsView: {
     marginTop: 30,
     margin: 15,
-    backgroundColor: COLORS.grey,
+    backgroundColor: COLORS.tealwhite,
     borderRadius: 15,
     padding: 20,
+    borderWidth: 1,
+    borderColor: 'transparent'
+  },
+  pressed: {
+    borderColor: '#ccc',
+    // backgroundColor: 'rgba(255, 255, 255, 0.25)'
   },
   reviewsText: {
     color: COLORS.white,
@@ -171,11 +221,15 @@ const styles = StyleSheet.create({
   },
   secondRowContainer: {
     marginTop: 0,
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    borderRadius: 10,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: 'transparent'
   },
   rowContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
     gap: 5,
   },
   columnContent: {
@@ -188,9 +242,19 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 15,
   },
+  timeUpdateText: {
+    color: 'rgba(255, 255, 255, 0.6)',
+    fontWeight: '400',
+    fontSize: 14,
+  },
+  reviewsNumberCountText: {
+    fontSize: 15, 
+    fontWeight: '500', 
+    color: COLORS.brightteal
+  },
   priceText: {
     fontWeight: 'bold',
-    fontSize: 27,
+    fontSize: 25,
     color: COLORS.white
   },
   secondaryPriceText: {

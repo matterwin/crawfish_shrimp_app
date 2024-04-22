@@ -7,7 +7,6 @@ const Dummy4 = ({ selectedItem }) => {
   return(
     <BottomSheetVendor selectedItem={selectedItem}>
       <View style={styles.container}>
-        <Text> Profile Screen</Text>
       </View>
     </BottomSheetVendor>
   );

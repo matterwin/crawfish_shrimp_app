@@ -1,9 +1,10 @@
 import React, { useCallback, useMemo, useRef, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, TouchableOpacity, Platform, } from 'react-native';
-import BottomSheet, { BottomSheetBackdrop, BottomSheetFooter, BottomSheetTextInput } from "@gorhom/bottom-sheet";
+import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView, Keyboard, TouchableOpacity, Platform } from 'react-native';
+import BottomSheet, { BottomSheetBackdrop, BottomSheetFooter, BottomSheetTextInput, useBottomSheetTimingConfigs } from "@gorhom/bottom-sheet";
 import { COLORS } from '../../constants';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Rating } from 'react-native-ratings';
+import { Easing } from 'react-native-reanimated';
 
 type Props = {
   children: JSX.Element | JSX.Element[];
@@ -20,6 +21,10 @@ const BottomSheetReviews = ({ children, selectedItem, snapIndex, setSnapIndex }:
   const handleSheetChanges = useCallback((index: number) => {
     setSnapIndex(index);
   }, []);
+
+  const animationConfigs = useBottomSheetTimingConfigs({
+    duration: 400,
+  });
 
   const renderBackdrop = useCallback(
 		(props) => (
@@ -73,12 +78,13 @@ const BottomSheetReviews = ({ children, selectedItem, snapIndex, setSnapIndex }:
         onChange={handleSheetChanges}
         handleStyle={{ marginBottom: -3, borderRadius: 15, }}
         backgroundStyle={{ backgroundColor: COLORS.teal, borderRadius: 15, borderWidth: 1, borderColor: COLORS.tealwhite }}
-        handleIndicatorStyle={{ backgroundColor: COLORS.brightteal, width: 60, height: 4 }} 
+        handleIndicatorStyle={{ backgroundColor: COLORS.brightteal, width: 30, height: 5 }} 
         backdropComponent={renderBackdrop}
         footerComponent={renderFooter}
         keyboardBehavior="extend"
         keyboardBlurBehavior="restore"
         android_keyboardInputMode='adjustResize'
+        animationConfigs={animationConfigs}
       >
         <View style={styles.sheetContainer}> 
           <View style={styles.titleView}>

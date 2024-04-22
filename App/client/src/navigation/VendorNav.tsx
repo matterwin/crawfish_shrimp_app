@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, View, ColorValue, Text, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, ColorValue, Text, TouchableOpacity, Linking, Platform, Pressable } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Dummy4 from '../screens/dummy/Dummy4.tsx';
 import { COLORS } from '../constants/index.tsx';
@@ -8,6 +8,21 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const Stack = createStackNavigator();
 
 const VendorNav = ({ navigation, route }) => {
+  const [isPressedIn, setIsPressedIn] = useState(false);
+
+  const openMapsByAddress = (address) => {
+    let url = '';
+
+    if (Platform.OS === 'ios') {
+      url = `http://maps.apple.com/?q=${address}`;
+    } else if (Platform.OS === 'android') {
+      url = `http://maps.google.com/maps?q=${address}`;
+    }
+
+    Linking.openURL(url);
+  };
+
+
   return (
     <Stack.Navigator 
       initialRouteName='Dummy4' 
@@ -34,12 +49,17 @@ const VendorNav = ({ navigation, route }) => {
           ),
           headerRight: () => (
             <View style={{ marginRight: 15, width: '100%' }}>
-              <TouchableOpacity style={[styles.header, { width: '100%' }]} onTouchEnd={() => console.log("touched")}>
+              <Pressable 
+                style={[styles.header, { width: '100%' }, isPressedIn && { backgroundColor: 'rgba(255, 255, 255, 0.15)' }]} 
+                onPress={() => openMapsByAddress(route.params?.selectedItem?.address)}
+                onPressIn={() => setIsPressedIn(true)}
+                onPressOut={() => setIsPressedIn(false)}
+              >
                 <View style={styles.headerRight}>
                   <Text style={styles.dirText}>Directions</Text>
                   <Icon name="car" style={{ margin: 0, padding: 0 }} size={26} color={COLORS.white} />
                 </View>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           ),
         }}

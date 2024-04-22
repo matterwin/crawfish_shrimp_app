@@ -1,9 +1,21 @@
 import React, { useCallback, useMemo, useRef, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, TouchableOpacity, Platform, } from 'react-native';
-import BottomSheet, { BottomSheetBackdrop, BottomSheetFooter, BottomSheetTextInput } from "@gorhom/bottom-sheet";
+import { 
+  View, 
+  Text, 
+  StyleSheet, 
+  TextInput, 
+  KeyboardAvoidingView,
+  Keyboard, 
+  TouchableWithoutFeedback, 
+  TouchableOpacity, 
+  Platform, 
+  Dimensions,
+} from 'react-native';
+import BottomSheet, { BottomSheetBackdrop, BottomSheetFooter, BottomSheetTextInput, useBottomSheetTimingConfigs } from "@gorhom/bottom-sheet";
 import { COLORS } from '../../constants';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Rating } from 'react-native-ratings';
+import FlatListPrices from '../flatlists/FlatListPrices.tsx';
 
 type Props = {
   children: JSX.Element | JSX.Element[];
@@ -21,6 +33,10 @@ const BottomSheetPrices = ({ children, selectedItem, snapIndex, setSnapIndex }: 
     setSnapIndex(index);
   }, []);
 
+  const animationConfigs = useBottomSheetTimingConfigs({
+    duration: 400,
+  });
+
   const renderBackdrop = useCallback(
 		(props) => (
 			<BottomSheetBackdrop
@@ -37,25 +53,10 @@ const BottomSheetPrices = ({ children, selectedItem, snapIndex, setSnapIndex }: 
   const renderFooter = useCallback(
     props => (
       <BottomSheetFooter {...props}>
-        <View style={styles.modalView}>
-          <View style={styles.textInputContainer}>
-              <BottomSheetTextInput
-                  ref={textInputRef}
-                  placeholder='Comment Review' 
-                  placeholderTextColor={'rgba(0, 0, 0, 0.6)'}
-                  autoCapitalize='none' 
-                  onChangeText={(text) => setUserInput(text)} 
-                  color={COLORS.royalblue}
-                  style={styles.textInput}
-                  keyboardAppearance='dark'
-                  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                  keyboardBehavior="extend"
-                  keyboardBlurBehavior="restore"
-                />
-            <TouchableOpacity style={styles.searchIcon}onPress={() => console.log("pressed")}>
-              <Icon name="arrow-up" size={25} color={COLORS.white}  />
-            </TouchableOpacity>
-          </View> 
+        <View style={[styles.closeParentView, styles.shadowView]}>
+          <TouchableOpacity onPress={() => console.log("re")} style={styles.bottomCloseContainer}>
+            <Text style={styles.closeText}>Update Price</Text> 
+          </TouchableOpacity>
         </View>
       </BottomSheetFooter>
     ),
@@ -73,17 +74,19 @@ const BottomSheetPrices = ({ children, selectedItem, snapIndex, setSnapIndex }: 
         onChange={handleSheetChanges}
         handleStyle={{ marginBottom: -3, borderRadius: 15, }}
         backgroundStyle={{ backgroundColor: COLORS.teal, borderRadius: 15, borderWidth: 1, borderColor: COLORS.tealwhite }}
-        handleIndicatorStyle={{ backgroundColor: COLORS.brightteal, width: 60, height: 4 }} 
+        handleIndicatorStyle={{ backgroundColor: COLORS.brightteal, width: 30, height: 5 }} 
         backdropComponent={renderBackdrop}
         footerComponent={renderFooter}
         keyboardBehavior="extend"
         keyboardBlurBehavior="restore"
         android_keyboardInputMode='adjustResize'
+        animationConfigs={animationConfigs}
       >
         <View style={styles.sheetContainer}> 
           <View style={styles.titleView}>
             <Text style={styles.titleText}>Boil Prices</Text>
           </View>
+          <FlatListPrices  />
         </View>
       </BottomSheet>
     </View>
@@ -103,7 +106,7 @@ const styles = StyleSheet.create({
     // margin: 15,
     overflow: 'visible',
     marginTop: 0,
-    gap: 15
+    // gap: 15
   },
   input: {
     marginTop: 8,
@@ -178,6 +181,36 @@ const styles = StyleSheet.create({
   closeIcon: {
     padding: 15,
     paddingLeft: 0
+  },
+  closeParentView: {
+    borderRadius: 15,
+    // height: "14%",
+    paddingVertical: 25,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.teal,
+  },
+  shadowView: {
+    shadowColor: COLORS.black,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 10,
+    shadowOffset: { width: 1, height: 1 },
+    shadowRadius: 10,
+    shadowOpacity: 0.1,
+  },
+  bottomCloseContainer: {
+    borderRadius: 15,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+    paddingBottom: 20,
+  },
+  closeText: {
+    fontWeight: 'bold',
+    fontSize: 21,
+    color: COLORS.orange
   },
 });
 

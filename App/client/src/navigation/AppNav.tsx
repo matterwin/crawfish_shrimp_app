@@ -13,7 +13,7 @@ const AppNav = () => {
     <Stack.Navigator initialRouteName='BottomNav'>
       <Stack.Screen name={"BottomNav"} component={BottomNav} options={{ headerShown: false }}/>
       <Stack.Screen name={"ProfileNav"} component={ProfileNav} options={{ headerShown: false }}/>
-      <Stack.Screen name={"VendorNav"} component={VendorNav} options={{ headerShown: false }}/>
+      <Stack.Screen name={"VendorNav"} component={VendorNav} options={{ headerShown: false, gestureEnabled: false }}/>
     </Stack.Navigator>
   );
 };
