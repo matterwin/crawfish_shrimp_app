@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, StyleSheet, Text, Pressable, View, Dimensions, TouchableOpacity } from 'react-native';
+import { Modal, StyleSheet, Text, Pressable, Keyboard, View, Dimensions, TouchableOpacity, TouchableWithoutFeedback, TextInput, Button, KeyboardAvoidingView, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { COLORS } from '../../constants';
 import * as Haptics from 'expo-haptics';
@@ -7,10 +7,40 @@ import ModalAllowLocation from './ModalAllowLocation';
 import ModalCityChooser from './ModalCityChooser.tsx';
 
 const ModalPriceUpdate = ({ modalVisible, setModalVisible, title }) => {
+  const [number, setNumber] = useState('');
+
+  const handleInputChange = (text) => {
+  const formattedText = text.replace(/[^0-9]/g, '');
+
+  if(formattedText.length > 4) {
+    setNumber(formattedText.substring(4));
+  } else if (formattedText.length > 1) {
+    if(formattedText.length == 4) {
+      const firstTwoDigits = formattedText.substring(0, 2);
+      const remainingDigits = formattedText.substring(2);
+      setNumber(firstTwoDigits + '.' + remainingDigits);
+    } else {
+      const firstTwoDigits = formattedText.substring(0, 1);
+      const remainingDigits = formattedText.substring(1);
+      setNumber(firstTwoDigits + '.' + remainingDigits);
+    }
+  } else {
+    setNumber(formattedText);
+  }
+};
  
   const handleOnPress = () => {
     setModalVisible(true);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+  };
+
+  const dismissKeyboard = () => {
+    Keyboard.dismiss();
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+    setNumber('');
   };
 
    return (
@@ -19,22 +49,71 @@ const ModalPriceUpdate = ({ modalVisible, setModalVisible, title }) => {
         animationType="slide"
         transparent={true}
         visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
       >
         <View style={styles.headerSafeView}>
           <View style={styles.header} onTouchEnd={() => setModalVisible(false)}>
             <Icon name="arrow-back" style={{ margin: 0, padding: 0 }} size={26} color={COLORS.white} />
           </View>
         </View>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
+        <Pressable onPressIn={dismissKeyboard} style={styles.centeredView}>
+          <View style={styles.modalView} onPress={dismissKeyboard}>
             <View style={styles.contentModalMinusCloseView}>
               <View>
                 <Text style={styles.modalText}>{title}</Text>
               </View> 
-            </View>
+              <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.optionsView}>
+                <View>
+                  <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row', gap: 10 }}>
+                    <View style={styles.inputKeyboardView}>
+                      <TextInput
+                        style={styles.textInput}
+                        keyboardType="numeric"
+                        placeholder="Enter a number"
+                        value={number}
+                        onChangeText={handleInputChange}
+                        placeholderTextColor="#fff"
+                      />
+                    </View> 
+                    <View style={styles.inputKeyboardView}>
+                      <TextInput
+                        style={styles.textInput}
+                        keyboardType="numeric"
+                        placeholder="Enter a number"
+                        value={number}
+                        onChangeText={handleInputChange}
+                        placeholderTextColor="#fff"
+                      />
+                    </View>
+                  </View>
+                </View>
+                <View>
+                  <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row', gap: 10 }}>
+                    <View style={styles.inputKeyboardView}>
+                      <TextInput
+                        style={styles.textInput}
+                        keyboardType="numeric"
+                        placeholder="Enter a number"
+                        value={number}
+                        onChangeText={handleInputChange}
+                        placeholderTextColor="#fff"
+                      />
+                    </View> 
+                    <View style={styles.inputKeyboardView}>
+                      <TextInput
+                        style={styles.textInput}
+                        keyboardType="numeric"
+                        placeholder="Enter a number"
+                        value={number}
+                        onChangeText={handleInputChange}
+                        placeholderTextColor="#fff"
+                      />
+                    </View>
+                  </View>
+                </View>
+              </KeyboardAvoidingView>
+             </View>
           </View>
-        </View>
+        </Pressable>
         <View style={[styles.closeParentView, styles.shadowView]}>
           <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.bottomCloseContainer}>
             <Text style={styles.closeText}>CONFIRM</Text> 
@@ -88,35 +167,23 @@ const styles = StyleSheet.create({
     padding: 50,
     flex: 1
   },
-  cityViewParent: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  cityView: {
-    backgroundColor: "rgba(144, 149, 158, 0.3)", 
-    borderColor: COLORS.grey, 
-    borderWidth: 1, 
-    borderRadius: '100%', 
-    padding: 20,
-  },
-  cityText: {
-    fontSize: 20,
-    color: COLORS.green,
-  },
   optionsView: {
     position: 'absolute',
     top:0,right:0,left:0,bottom:0,
     alignItems: 'center',
     justifyContent: 'center',
+    gap: 30,
+    display: 'flex',
+    flex: 1,
   },
   optionsBoxParentView: {
     width: Dimensions.get('window').width,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
+    gap: 10,
   },
   optionBoxView: {
    flex: 1,
@@ -131,52 +198,12 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: 16
   },
-  locationNoticeText: {
-    position: 'absolute',
-    right:0,left:0,bottom:0,
-    paddingBottom: 100,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  button: {
-    borderRadius: "50%",
-    borderColor: COLORS.grey,
-    borderWidth: 5,
-    paddingTop: 10,
-    borderTopRightRadius: "70%",
-    borderTopLeftRadius: "70%",
-    backgroundColor: 'rgba(71, 104, 110, 0.4)',
-  },
-  buttonOpen: {
-    backgroundColor: 'transparent',
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
   modalText: {
     marginBottom: 30,
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 22,
     color: COLORS.white,
-  },
-  modalIcon: {
-    padding: 0,
-    marginTop: -40,
-    paddingBottom: 10,
-    shadowColor: 'pink',
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 0.2,
-    elevation: 5,
   },
   closeParentView: {
     borderRadius: 15,
@@ -209,6 +236,20 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 21,
     color: COLORS.orange
+  },
+  inputKeyboardView: {
+    backgroundColor: COLORS.brightteal,
+   
+    justifyContent: 'center',
+     alignItems: 'center',
+    borderRadius: 10,
+  },
+  textInput: {
+    color: COLORS.black,
+     padding: 20,
+     width: 150,
+     justifyContent: 'center',
+     alignItems: 'center',
   },
 });
 

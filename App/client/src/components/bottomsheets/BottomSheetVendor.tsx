@@ -61,6 +61,7 @@ const BottomSheetVendor = ({ children, selectedItem }: Props & { selectedItem: I
   };
   
   const PriceBox = ({ id, item, food, type, handleSetSnapIndexForPrices }) => {
+    const foodTypeStyle = food === "crawfish" ? styles.underlineC : styles.underlineS;
 
     return (
       <Pressable 
@@ -70,7 +71,7 @@ const BottomSheetVendor = ({ children, selectedItem }: Props & { selectedItem: I
         <View style={styles.rowContainer}>
           <View>
             <Text style={styles.labelText}>
-              <Text style={styles.underline}>{type}</Text> {food} price
+              <Text style={foodTypeStyle}>{type}</Text> {food} price
             </Text>
             <Text style={styles.priceText}>${item.boilPrice} / lb</Text>
           </View>
@@ -266,8 +267,11 @@ const styles = StyleSheet.create({
     color: COLORS.green, 
     fontSize: 16
   },
-  underline: {
-    color: COLORS.brightteal
+  underlineC: {
+    color: COLORS.orange
+  },
+  underlineS: {
+    color: COLORS.orange
   },
 });
 
