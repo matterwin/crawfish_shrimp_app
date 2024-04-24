@@ -114,7 +114,7 @@ const BottomSheetVendor = ({ children, selectedItem }: Props & { selectedItem: I
             snapPoints={snapPoints}
             onChange={handleSheetChanges}
             handleStyle={{ marginBottom: -3, borderRadius: 15, }}
-            backgroundStyle={{ backgroundColor: COLORS.teal, borderRadius: 15, borderWidth: 1, borderColor: COLORS.tealwhite }}
+            backgroundStyle={{ backgroundColor: COLORS.teal, borderRadius: 15, borderWidth: 1, borderColor: COLORS.tealDark }}
             handleIndicatorStyle={{ backgroundColor: COLORS.brightteal, width: 30, height: 5 }} 
           >
           <BottomSheetScrollView style={{flex:1}}>
@@ -212,6 +212,7 @@ const styles = StyleSheet.create({
     width: '100%',
     borderTopWidth: 1,
     borderColor: COLORS.tealwhite,  
+    borderColor: COLORS.tealDark,
   },
   rowContainer: {
     flexDirection: 'row',
@@ -221,7 +222,7 @@ const styles = StyleSheet.create({
   },
   secondRowContainer: {
     marginTop: 0,
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
     borderRadius: 10,
     padding: 10,
     borderWidth: 1,

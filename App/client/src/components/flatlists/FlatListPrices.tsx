@@ -4,6 +4,7 @@ import { COLORS } from '../../constants/index.tsx';
 import IconContainer from '../../components/iconContainers/IconContainer.tsx';
 import { useNavigation } from '@react-navigation/native';
 import CircleIconContainer from '../iconContainers/CircleIconContainer.tsx';
+import { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 
 type Item = {
   id: string;
@@ -52,7 +53,7 @@ const FlatListPrices = () => {
 
   return (
     <View style={styles.container}>
-      <FlatList
+      <BottomSheetFlatList
         data={DATA}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}

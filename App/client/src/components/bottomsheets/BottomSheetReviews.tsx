@@ -77,7 +77,7 @@ const BottomSheetReviews = ({ children, selectedItem, snapIndex, setSnapIndex }:
         enablePanDownToClose
         onChange={handleSheetChanges}
         handleStyle={{ marginBottom: -3, borderRadius: 15, }}
-        backgroundStyle={{ backgroundColor: COLORS.teal, borderRadius: 15, borderWidth: 1, borderColor: COLORS.tealwhite }}
+        backgroundStyle={{ backgroundColor: COLORS.teal, borderRadius: 15, borderWidth: 1, borderColor: COLORS.tealDark }}
         handleIndicatorStyle={{ backgroundColor: COLORS.brightteal, width: 30, height: 5 }} 
         backdropComponent={renderBackdrop}
         footerComponent={renderFooter}
@@ -89,6 +89,9 @@ const BottomSheetReviews = ({ children, selectedItem, snapIndex, setSnapIndex }:
         <View style={styles.sheetContainer}> 
           <View style={styles.titleView}>
             <Text style={styles.titleText}>Reviews</Text>
+            <TouchableOpacity style={{ margin: 10, marginRight: 15, marginTop: 0, marginBottom: 5 }} onPress={() => bottomSheetRef.current.close()}>
+              <Icon name="close-outline" size={40} color={COLORS.brightteal}/>
+            </TouchableOpacity>
           </View>
         </View>
       </BottomSheet>
@@ -122,18 +125,19 @@ const styles = StyleSheet.create({
   },
   titleView: {
     alignItems: 'center',
-    justifyContent: 'center',
-    flexWarp: 'wrap',
+    justifyContent: 'space-between',
     borderBottomWidth: 1,
-    borderColor: COLORS.tealwhite
+    borderColor: COLORS.tealDark,
+    flexDirection: 'row',
   },
   titleText: {
     color: COLORS.white,
-    margin: 15,
-    marginTop: 5,
+    margin: 10, 
+    marginLeft: 15, 
+    marginTop: 0, 
+    marginBottom: 5,
     fontWeight: '700',
     fontSize: 18,
-    width: '80%',
     textAlign: 'center'
   },
   reviewsView: {

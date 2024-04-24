@@ -73,28 +73,28 @@ const VendorNav = ({ navigation, route }) => {
 export default VendorNav;
 
 const styles = StyleSheet.create({
-    headerTitle: {
-      fontSize: 19
-    },
-    header: {
-      backgroundColor: 'rgba(10, 10, 10, 0.15)',
-      // backgroundColor: 'rgba(50, 168, 82, 0.15)',
-      borderRadius: 50,
-      width: 50,
-      height: 50,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    headerRight: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      width: '80%'
-    },
-    dirText: {
-      color: COLORS.white,
-      fontSize: 16,
-      fontWeight: '500'
-    },
+  headerTitle: {
+    fontSize: 19
+  },
+  header: {
+    backgroundColor: 'rgba(10, 10, 10, 0.15)',
+    // backgroundColor: 'rgba(50, 168, 82, 0.15)',
+    borderRadius: 50,
+    width: 50,
+    height: 50,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '80%'
+  },
+  dirText: {
+    color: COLORS.white,
+    fontSize: 16,
+    fontWeight: '500'
+  },
 });

@@ -16,6 +16,7 @@ import { COLORS } from '../../constants';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Rating } from 'react-native-ratings';
 import FlatListPrices from '../flatlists/FlatListPrices.tsx';
+import ModalPriceUpdate from '../modals/ModalPriceUpdate.tsx';
 
 type Props = {
   children: JSX.Element | JSX.Element[];
@@ -26,6 +27,7 @@ const BottomSheetPrices = ({ children, selectedItem, snapIndex, setSnapIndex }: 
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [item, setItem] = useState(selectedItem);
   const [userInput, setUserInput] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
 
   const snapPoints = useMemo(() => ['70%', '85%'], []);
 
@@ -36,6 +38,10 @@ const BottomSheetPrices = ({ children, selectedItem, snapIndex, setSnapIndex }: 
   const animationConfigs = useBottomSheetTimingConfigs({
     duration: 400,
   });
+
+  const handleUpdate = () => {
+    setModalVisible(true);
+  };
 
   const renderBackdrop = useCallback(
 		(props) => (
@@ -52,9 +58,9 @@ const BottomSheetPrices = ({ children, selectedItem, snapIndex, setSnapIndex }: 
 
   const renderFooter = useCallback(
     props => (
-      <BottomSheetFooter {...props}>
+      <BottomSheetFooter {...props} inset={550}>
         <View style={[styles.closeParentView, styles.shadowView]}>
-          <TouchableOpacity onPress={() => console.log("re")} style={styles.bottomCloseContainer}>
+          <TouchableOpacity onPress={handleUpdate} style={styles.bottomCloseContainer}>
             <Text style={styles.closeText}>Update Price</Text> 
           </TouchableOpacity>
         </View>
@@ -73,7 +79,7 @@ const BottomSheetPrices = ({ children, selectedItem, snapIndex, setSnapIndex }: 
         enablePanDownToClose
         onChange={handleSheetChanges}
         handleStyle={{ marginBottom: -3, borderRadius: 15, }}
-        backgroundStyle={{ backgroundColor: COLORS.teal, borderRadius: 15, borderWidth: 1, borderColor: COLORS.tealwhite }}
+        backgroundStyle={{ backgroundColor: COLORS.teal, borderRadius: 15, borderWidth: 1, borderColor: COLORS.tealDark }}
         handleIndicatorStyle={{ backgroundColor: COLORS.brightteal, width: 30, height: 5 }} 
         backdropComponent={renderBackdrop}
         footerComponent={renderFooter}
@@ -85,9 +91,17 @@ const BottomSheetPrices = ({ children, selectedItem, snapIndex, setSnapIndex }: 
         <View style={styles.sheetContainer}> 
           <View style={styles.titleView}>
             <Text style={styles.titleText}>Boil Prices</Text>
+            <TouchableOpacity style={{ margin: 10, marginRight: 15, marginTop: 0, marginBottom: 5 }} onPress={() => bottomSheetRef.current.close()}>
+              <Icon name="close-outline" size={40} color={COLORS.brightteal}/>
+            </TouchableOpacity>
           </View>
           <FlatListPrices  />
         </View>
+        <ModalPriceUpdate
+          setModalVisible={setModalVisible}
+          modalVisible={modalVisible}
+          title={item.title}
+        />
       </BottomSheet>
     </View>
   );
@@ -119,18 +133,20 @@ const styles = StyleSheet.create({
   },
   titleView: {
     alignItems: 'center',
-    justifyContent: 'center',
-    flexWarp: 'wrap',
+    justifyContent: 'space-between',
     borderBottomWidth: 1,
-    borderColor: COLORS.tealwhite
+    borderColor: COLORS.tealwhite,
+    borderColor: COLORS.tealDark,
+    flexDirection: 'row',
   },
   titleText: {
     color: COLORS.white,
-    margin: 15,
-    marginTop: 5,
+    margin: 10, 
+    marginLeft: 15, 
+    marginTop: 0, 
+    marginBottom: 5,
     fontWeight: '700',
     fontSize: 18,
-    width: '80%',
     textAlign: 'center'
   },
   reviewsView: {
@@ -184,8 +200,8 @@ const styles = StyleSheet.create({
   },
   closeParentView: {
     borderRadius: 15,
-    // height: "14%",
-    paddingVertical: 25,
+    // paddingVertical: 25,
+    height: Dimensions.get('window').height * 0.13,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: COLORS.teal,
@@ -205,7 +221,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
-    paddingBottom: 20,
+    paddingBottom: 18,
   },
   closeText: {
     fontWeight: 'bold',

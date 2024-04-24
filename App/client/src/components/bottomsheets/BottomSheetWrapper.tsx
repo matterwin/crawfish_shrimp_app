@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { COLORS } from '../../constants';
 import CustomBackdrop from './CustomBackdrop';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -27,36 +27,38 @@ const BottomSheetWrapper = ({ children }: Props) => {
   const handleFocus = () => {
     setModalVisible(true);
     Keyboard.dismiss();
-    bottomSheetRef.current?.snapToIndex(2);
   };
 
-  const handleBackdropSelection = useCallback(() => {
-    bottomSheetRef.current?.snapToIndex(0);
-    setModalVisible(false);
-    Keyboard.dismiss();
-  }, []);
+  const renderBackdrop = useCallback(
+		(props) => (
+			<BottomSheetBackdrop
+				{...props}
+        appearsOnIndex={0}
+        pressBehavior={0}
+			/>
+		),
+		[]
+	);
 
   return (
     <View style={styles.container}>
       {children} 
       <BottomSheet
         ref={bottomSheetRef}
-        index={0}
+        index={1}
         snapPoints={snapPoints}
+        backdropComponent={renderBackdrop}
         onChange={handleSheetChanges}
         handleStyle={{ marginBottom: 0, borderRadius: 15 }}
-        backgroundStyle={{ backgroundColor: COLORS.teal, borderRadius: 15, borderWidth: 1, borderColor: COLORS.tealwhite }}
+        backgroundStyle={{ backgroundColor: COLORS.teal, borderRadius: 15, borderWidth: 1, borderColor: COLORS.tealDark }}
         handleIndicatorStyle={{ backgroundColor: COLORS.brightteal, width: 30, height: 5 }}
-        backdropComponent={(props) => (
-          <CustomBackdrop {...props} onSelectBackdrop={handleBackdropSelection} />
-        )}
       >
-        <TouchableWithoutFeedback onPressIn={Keyboard.dismiss} style={{flex: 1}}>
+        <TouchableWithoutFeedback style={{flex: 1}}>
           <View style={styles.contentContainer}>
             <View style={styles.textInputContainer}>
-              <TouchableOpacity onPressIn={snapIndex === 0 ? handleFocus : handleBackdropSelection }>
+              <TouchableOpacity onPressIn={handleFocus}>
                 <Icon 
-                  name={snapIndex === 0 ? 'search' : 'search'} 
+                  name={'search'} 
                   size={25} 
                   color={COLORS.tealwhite} 
                   style={styles.searchIcon} 
@@ -78,7 +80,7 @@ const BottomSheetWrapper = ({ children }: Props) => {
             </View>
             <View style={styles.bottomTab}>
               <View>
-                <Text>Testing</Text>
+                <Text></Text>
               </View>
             </View>
           </View> 
