@@ -11,9 +11,15 @@ const ModalPriceUpdate = ({ modalVisible, setModalVisible, title }) => {
   const [boiledShrimpPrice, setBoiledShrimpPrice] = useState('');
   const [liveCrawfishPrice, setLiveCrawfishPrice] = useState('');
   const [liveShrimpPrice, setLiveShrimpPrice] = useState('');
-  const placeholder = '0.00';
 
-  const checkForDisableConfirm = () => {
+  const [boiledCrawfishFocus, setBoiledCrawfishFocus] = useState(false);
+  const [liveCrawfishFocus, setLiveCrawfishFocus] = useState(false);
+  const [boiledShrimpFocus, setBoiledShrimpFocus] = useState(false);
+  const [liveShrimpFocus, setLiveShrimpFocus] = useState(false);
+
+  const placeholder = '-.--';
+
+  useEffect(() => {
     const anyPriceNotEmpty = 
       boiledShrimpPrice !== '' ||
       boiledCrawfishPrice !== '' ||
@@ -21,17 +27,16 @@ const ModalPriceUpdate = ({ modalVisible, setModalVisible, title }) => {
       liveCrawfishPrice !== '';
 
     const anyPriceNotZero = 
-      boiledShrimpPrice !== '0.00' ||
-      boiledCrawfishPrice !== '0.00' ||
-      liveShrimpPrice !== '0.00' ||
-      liveCrawfishPrice !== '0.00';
+      boiledShrimpPrice !== '-.--' ||
+      boiledCrawfishPrice !== '-.--' ||
+      liveShrimpPrice !== '-.--' ||
+      liveCrawfishPrice !== '-.--';
 
     setDisabledConfirm(!(anyPriceNotEmpty && anyPriceNotZero)); 
-  };
-
+  },[boiledShrimpPrice, boiledCrawfishPrice, liveCrawfishPrice, liveShrimpPrice]);
+    
   const handleInputChange = (text, setStateFunction) => {
     const formattedText = text.replace(/[^0-9]/g, '');
-    checkForDisableConfirm();
 
     if(formattedText.length > 4) {
       setStateFunction(formattedText.substring(4));
@@ -61,7 +66,10 @@ const ModalPriceUpdate = ({ modalVisible, setModalVisible, title }) => {
 
   const closeModal = () => {
     setModalVisible(false);
-    setNumber('');
+    setBoiledCrawfishPrice('');
+    setBoiledShrimpPrice('');
+    setLiveCrawfishPrice('');
+    setLiveShrimpPrice('');
   };
 
    return (
@@ -72,7 +80,7 @@ const ModalPriceUpdate = ({ modalVisible, setModalVisible, title }) => {
         visible={modalVisible}
       >
         <View style={styles.headerSafeView}>
-          <View style={styles.header} onTouchEnd={() => setModalVisible(false)}>
+          <View style={styles.header} onTouchEnd={closeModal}>
             <Icon name="arrow-back" style={{ margin: 0, padding: 0 }} size={26} color={COLORS.white} />
           </View>
         </View>
@@ -90,7 +98,14 @@ const ModalPriceUpdate = ({ modalVisible, setModalVisible, title }) => {
                   <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row', gap: 10 }}>
                     <View style={styles.stackPriceBoxView}>
                       <Text style={styles.typePriceText}>Boiled</Text>
-                      <View style={styles.inputKeyboardView}>
+                      <View 
+                        style={[
+                          styles.inputKeyboardView, 
+                          { 
+                            opacity: boiledCrawfishPrice  === '' && !boiledCrawfishFocus ? 0.2 : 1,
+                          }
+                        ]}
+                      >
                         <TextInput
                           style={styles.textInput}
                           keyboardType="numeric"
@@ -98,12 +113,21 @@ const ModalPriceUpdate = ({ modalVisible, setModalVisible, title }) => {
                           value={boiledCrawfishPrice}
                           onChangeText={(text) => handleInputChange(text, setBoiledCrawfishPrice)}
                           placeholderTextColor="#fff"
+                          onFocus={() => setBoiledCrawfishFocus(true)}
+                          onBlur={() => setBoiledCrawfishFocus(false)}
                         />
                       </View>
                     </View> 
                     <View style={styles.stackPriceBoxView}>
                       <Text style={styles.typePriceText}>Live</Text>
-                      <View style={styles.inputKeyboardView}>
+                      <View 
+                        style={[
+                          styles.inputKeyboardView, 
+                          { 
+                            opacity: liveCrawfishPrice  === '' && !liveCrawfishFocus ? 0.2 : 1,
+                          }
+                        ]}
+                      >
                         <TextInput
                           style={styles.textInput}
                           keyboardType="numeric"
@@ -111,6 +135,8 @@ const ModalPriceUpdate = ({ modalVisible, setModalVisible, title }) => {
                           value={liveCrawfishPrice}
                           onChangeText={(text) => handleInputChange(text, setLiveCrawfishPrice)}
                           placeholderTextColor="#fff"
+                          onFocus={() => setLiveCrawfishFocus(true)}
+                          onBlur={() => setLiveCrawfishFocus(false)}
                         />
                       </View>
                     </View>
@@ -120,7 +146,14 @@ const ModalPriceUpdate = ({ modalVisible, setModalVisible, title }) => {
                 <View>
                   <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row', gap: 10 }}>
                     <View style={styles.stackPriceBoxView}>
-                      <View style={styles.inputKeyboardView}>
+                      <View 
+                        style={[
+                          styles.inputKeyboardView, 
+                          { 
+                            opacity: boiledShrimpPrice  === '' && !boiledShrimpFocus ? 0.2 : 1,
+                          }
+                        ]}
+                      >
                         <TextInput
                           style={styles.textInput}
                           keyboardType="numeric"
@@ -128,12 +161,21 @@ const ModalPriceUpdate = ({ modalVisible, setModalVisible, title }) => {
                           value={boiledShrimpPrice}
                           onChangeText={(text) => handleInputChange(text, setBoiledShrimpPrice)}
                           placeholderTextColor="#fff"
+                          onFocus={() => setBoiledShrimpFocus(true)}
+                          onBlur={() => setBoiledShrimpFocus(false)}
                         />
                       </View>
                       <Text style={styles.typePriceText}>Boiled</Text>
                     </View> 
                     <View style={styles.stackPriceBoxView}>
-                      <View style={styles.inputKeyboardView}>
+                      <View 
+                        style={[
+                          styles.inputKeyboardView, 
+                          { 
+                            opacity: liveShrimpPrice  === '' && !liveShrimpFocus ? 0.2 : 1,
+                          }
+                        ]}
+                      >
                         <TextInput
                           style={styles.textInput}
                           keyboardType="numeric"
@@ -141,6 +183,8 @@ const ModalPriceUpdate = ({ modalVisible, setModalVisible, title }) => {
                           value={liveShrimpPrice}
                           onChangeText={(text) => handleInputChange(text, setLiveShrimpPrice)}
                           placeholderTextColor="#fff"
+                          onFocus={() => setLiveShrimpFocus(true)}
+                          onBlur={() => setLiveShrimpFocus(false)}
                         />
                       </View>
                       <Text style={styles.typePriceText}>Live</Text>
