@@ -3,31 +3,52 @@ import { Modal, StyleSheet, Text, Pressable, Keyboard, View, Dimensions, Touchab
 import Icon from 'react-native-vector-icons/Ionicons';
 import { COLORS } from '../../constants';
 import * as Haptics from 'expo-haptics';
-import ModalAllowLocation from './ModalAllowLocation';
-import ModalCityChooser from './ModalCityChooser.tsx';
+import CircleIconContainer from '../iconContainers/CircleIconContainer.tsx';
 
 const ModalPriceUpdate = ({ modalVisible, setModalVisible, title }) => {
-  const [number, setNumber] = useState('');
+  const [disabledConfirm, setDisabledConfirm] = useState(true);
+  const [boiledCrawfishPrice, setBoiledCrawfishPrice] = useState('');
+  const [boiledShrimpPrice, setBoiledShrimpPrice] = useState('');
+  const [liveCrawfishPrice, setLiveCrawfishPrice] = useState('');
+  const [liveShrimpPrice, setLiveShrimpPrice] = useState('');
+  const placeholder = '0.00';
 
-  const handleInputChange = (text) => {
-  const formattedText = text.replace(/[^0-9]/g, '');
+  const checkForDisableConfirm = () => {
+    const anyPriceNotEmpty = 
+      boiledShrimpPrice !== '' ||
+      boiledCrawfishPrice !== '' ||
+      liveShrimpPrice !== '' ||
+      liveCrawfishPrice !== '';
 
-  if(formattedText.length > 4) {
-    setNumber(formattedText.substring(4));
-  } else if (formattedText.length > 1) {
-    if(formattedText.length == 4) {
-      const firstTwoDigits = formattedText.substring(0, 2);
-      const remainingDigits = formattedText.substring(2);
-      setNumber(firstTwoDigits + '.' + remainingDigits);
+    const anyPriceNotZero = 
+      boiledShrimpPrice !== '0.00' ||
+      boiledCrawfishPrice !== '0.00' ||
+      liveShrimpPrice !== '0.00' ||
+      liveCrawfishPrice !== '0.00';
+
+    setDisabledConfirm(!(anyPriceNotEmpty && anyPriceNotZero)); 
+  };
+
+  const handleInputChange = (text, setStateFunction) => {
+    const formattedText = text.replace(/[^0-9]/g, '');
+    checkForDisableConfirm();
+
+    if(formattedText.length > 4) {
+      setStateFunction(formattedText.substring(4));
+    } else if (formattedText.length > 1) {
+      if(formattedText.length == 4) {
+        const firstTwoDigits = formattedText.substring(0, 2);
+        const remainingDigits = formattedText.substring(2);
+        setStateFunction(firstTwoDigits + '.' + remainingDigits);
+      } else {
+        const firstTwoDigits = formattedText.substring(0, 1);
+        const remainingDigits = formattedText.substring(1);
+        setStateFunction(firstTwoDigits + '.' + remainingDigits);
+      }
     } else {
-      const firstTwoDigits = formattedText.substring(0, 1);
-      const remainingDigits = formattedText.substring(1);
-      setNumber(firstTwoDigits + '.' + remainingDigits);
+      setStateFunction(formattedText);
     }
-  } else {
-    setNumber(formattedText);
-  }
-};
+  };
  
   const handleOnPress = () => {
     setModalVisible(true);
@@ -63,65 +84,92 @@ const ModalPriceUpdate = ({ modalVisible, setModalVisible, title }) => {
               </View> 
               <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.optionsView}>
                 <View>
+                  <CircleIconContainer food={"crawfish"} />
+                </View>
+                <View>
                   <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row', gap: 10 }}>
-                    <View style={styles.inputKeyboardView}>
-                      <TextInput
-                        style={styles.textInput}
-                        keyboardType="numeric"
-                        placeholder="Enter a number"
-                        value={number}
-                        onChangeText={handleInputChange}
-                        placeholderTextColor="#fff"
-                      />
+                    <View style={styles.stackPriceBoxView}>
+                      <Text style={styles.typePriceText}>Boiled</Text>
+                      <View style={styles.inputKeyboardView}>
+                        <TextInput
+                          style={styles.textInput}
+                          keyboardType="numeric"
+                          placeholder={placeholder}
+                          value={boiledCrawfishPrice}
+                          onChangeText={(text) => handleInputChange(text, setBoiledCrawfishPrice)}
+                          placeholderTextColor="#fff"
+                        />
+                      </View>
                     </View> 
-                    <View style={styles.inputKeyboardView}>
-                      <TextInput
-                        style={styles.textInput}
-                        keyboardType="numeric"
-                        placeholder="Enter a number"
-                        value={number}
-                        onChangeText={handleInputChange}
-                        placeholderTextColor="#fff"
-                      />
+                    <View style={styles.stackPriceBoxView}>
+                      <Text style={styles.typePriceText}>Live</Text>
+                      <View style={styles.inputKeyboardView}>
+                        <TextInput
+                          style={styles.textInput}
+                          keyboardType="numeric"
+                          placeholder={placeholder}
+                          value={liveCrawfishPrice}
+                          onChangeText={(text) => handleInputChange(text, setLiveCrawfishPrice)}
+                          placeholderTextColor="#fff"
+                        />
+                      </View>
+                    </View>
+                  </View>
+                </View>
+                <View style={{ height: 1, width: '100%', backgroundColor: COLORS.tealLight }}></View>
+                <View>
+                  <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row', gap: 10 }}>
+                    <View style={styles.stackPriceBoxView}>
+                      <View style={styles.inputKeyboardView}>
+                        <TextInput
+                          style={styles.textInput}
+                          keyboardType="numeric"
+                          placeholder={placeholder}
+                          value={boiledShrimpPrice}
+                          onChangeText={(text) => handleInputChange(text, setBoiledShrimpPrice)}
+                          placeholderTextColor="#fff"
+                        />
+                      </View>
+                      <Text style={styles.typePriceText}>Boiled</Text>
+                    </View> 
+                    <View style={styles.stackPriceBoxView}>
+                      <View style={styles.inputKeyboardView}>
+                        <TextInput
+                          style={styles.textInput}
+                          keyboardType="numeric"
+                          placeholder={placeholder}
+                          value={liveShrimpPrice}
+                          onChangeText={(text) => handleInputChange(text, setLiveShrimpPrice)}
+                          placeholderTextColor="#fff"
+                        />
+                      </View>
+                      <Text style={styles.typePriceText}>Live</Text>
                     </View>
                   </View>
                 </View>
                 <View>
-                  <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row', gap: 10 }}>
-                    <View style={styles.inputKeyboardView}>
-                      <TextInput
-                        style={styles.textInput}
-                        keyboardType="numeric"
-                        placeholder="Enter a number"
-                        value={number}
-                        onChangeText={handleInputChange}
-                        placeholderTextColor="#fff"
-                      />
-                    </View> 
-                    <View style={styles.inputKeyboardView}>
-                      <TextInput
-                        style={styles.textInput}
-                        keyboardType="numeric"
-                        placeholder="Enter a number"
-                        value={number}
-                        onChangeText={handleInputChange}
-                        placeholderTextColor="#fff"
-                      />
-                    </View>
-                  </View>
+                  <CircleIconContainer food={"shrimp"} />
                 </View>
               </KeyboardAvoidingView>
              </View>
           </View>
         </Pressable>
         <View style={[styles.closeParentView, styles.shadowView]}>
-          <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.bottomCloseContainer}>
-            <Text style={styles.closeText}>CONFIRM</Text> 
+          <TouchableOpacity
+            onPress={() => setModalVisible(false)}
+            style={styles.bottomCloseContainer}
+            disabled={disabledConfirm}
+          >
+            <Text style={[styles.closeText, disabledConfirm && { color: COLORS.grey }]}>CONFIRM</Text> 
           </TouchableOpacity>
+        </View>
+        <View style={{ position: 'absolute', justifyContent: 'center', alignItems: 'center', bottom: '15%', width: '100%' }}>
+          <Text style={{ fontSize: 13, color: COLORS.grey }}>All prices must be by the pound (lb) and in USD ($)</Text>
         </View>
       </Modal>
     </View>
-  );};
+  );
+};
 
 export default ModalPriceUpdate;
 
@@ -239,17 +287,29 @@ const styles = StyleSheet.create({
   },
   inputKeyboardView: {
     backgroundColor: COLORS.brightteal,
-   
     justifyContent: 'center',
-     alignItems: 'center',
+    alignItems: 'center',
     borderRadius: 10,
+    width: 140,
+    height: 60,
   },
   textInput: {
-    color: COLORS.black,
-     padding: 20,
-     width: 150,
-     justifyContent: 'center',
-     alignItems: 'center',
+    color: COLORS.white,
+    fontSize: 16,
+    width: '100%',
+    height: '100%',
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  typePriceText: {
+    color: COLORS.brightteal,
+    fontSize: 16,
+    fontWeight: '500'
+  },
+  stackPriceBoxView: {
+    gap: 5, 
+    justifyContent: 'center', 
+    alignItems: 'center',
   },
 });
 

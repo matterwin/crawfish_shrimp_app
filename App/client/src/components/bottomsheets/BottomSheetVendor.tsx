@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView, Keyboard, TouchableOpacity, Pressable } from 'react-native';
+import React, { useCallback, useMemo, useRef, useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView, Keyboard, TouchableOpacity, Pressable, Animated } from 'react-native';
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { COLORS } from '../../constants';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -30,7 +30,7 @@ const BottomSheetVendor = ({ children, selectedItem }: Props & { selectedItem: I
 
   const handleSheetChanges = useCallback((index: number) => {
     setSnapIndex(index-1);
-  }, []);
+  }, []); 
 
   const handleSetSnapIndexForReviews = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -71,7 +71,7 @@ const BottomSheetVendor = ({ children, selectedItem }: Props & { selectedItem: I
         <View style={styles.rowContainer}>
           <View>
             <Text style={styles.labelText}>
-              <Text style={foodTypeStyle}>{type}</Text> {food} price
+              <Text style={foodTypeStyle}>{type}</Text> {food}
             </Text>
             <Text style={styles.priceText}>${item.boilPrice} / lb</Text>
           </View>
@@ -79,11 +79,11 @@ const BottomSheetVendor = ({ children, selectedItem }: Props & { selectedItem: I
             <CircleIconContainer food={food} />
           </View>
         </View>
-        <View 
+        <Animated.View
           style={[
             styles.rowContainer, 
             styles.secondRowContainer, 
-            pressedPriceId === id && isPressedPrices && { borderColor: COLORS.white, backgroundColor: 'rgba(255, 255, 255, 0.35)' }
+            pressedPriceId === id && isPressedPrices && { borderColor: COLORS.white, backgroundColor: 'rgba(255, 255, 255, 0.35)' },
           ]}
         >
           <View>
@@ -99,7 +99,7 @@ const BottomSheetVendor = ({ children, selectedItem }: Props & { selectedItem: I
             <Text style={styles.secondaryPriceText}>${item.boilPrice}</Text>
             <Text style={styles.secondaryText}>m3ttwin</Text>
           </View>
-        </View>
+        </Animated.View>
       </Pressable>
     );
   };
