@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView, Keyboard, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, StyleSheet, Pressable, TextInput, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Platform } from 'react-native';
 import BottomSheet, { BottomSheetBackdrop, BottomSheetFooter, BottomSheetTextInput, useBottomSheetTimingConfigs } from "@gorhom/bottom-sheet";
 import { COLORS } from '../../constants';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -15,6 +15,7 @@ const BottomSheetReviews = ({ children, selectedItem, snapIndex, setSnapIndex }:
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [item, setItem] = useState(selectedItem);
   const [userInput, setUserInput] = useState('');
+  const [inputFocused, setInputFocused] = useState(false);
 
   const snapPoints = useMemo(() => ['70%', '85%'], []);
 
@@ -25,6 +26,18 @@ const BottomSheetReviews = ({ children, selectedItem, snapIndex, setSnapIndex }:
   const animationConfigs = useBottomSheetTimingConfigs({
     duration: 400,
   });
+
+  const handleTouchOutside = () => {
+    Keyboard.dismiss();
+  };
+
+  const handleFocus = () => {
+    setInputFocused(true);
+  };
+
+  const handleBlur = () => {
+    setInputFocused(false);
+  };
 
   const renderBackdrop = useCallback(
 		(props) => (
@@ -43,24 +56,28 @@ const BottomSheetReviews = ({ children, selectedItem, snapIndex, setSnapIndex }:
     props => (
       <BottomSheetFooter {...props}>
         <View style={styles.modalView}>
-          <View style={styles.textInputContainer}>
+          <View style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', width: '100%', }}>
+            <View style={[styles.textInputContainer, { borderColor: inputFocused ? COLORS.white : COLORS.tealwhite }]}>
               <BottomSheetTextInput
-                  ref={textInputRef}
-                  placeholder='Comment Review' 
-                  placeholderTextColor={'rgba(0, 0, 0, 0.6)'}
-                  autoCapitalize='none' 
-                  onChangeText={(text) => setUserInput(text)} 
-                  color={COLORS.royalblue}
-                  style={styles.textInput}
-                  keyboardAppearance='dark'
-                  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                  keyboardBehavior="extend"
-                  keyboardBlurBehavior="restore"
-                />
-            <TouchableOpacity style={styles.searchIcon}onPress={() => console.log("pressed")}>
+                ref={textInputRef}
+                placeholder='Comment Review'
+                placeholderTextColor={'rgba(0, 0, 0, 0.6)'}
+                autoCapitalize='none'
+                onChangeText={(text) => setUserInput(text)}
+                style={styles.textInput}
+                keyboardAppearance='dark'
+                keyboardBehavior="extend"
+                keyboardBlurBehavior="restore"
+                multiline
+                // maxHeight={120}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+              />
+            </View> 
+            <TouchableOpacity style={styles.searchIcon} onPress={() => console.log("pressed")}>
               <Icon name="arrow-up" size={25} color={COLORS.white}  />
             </TouchableOpacity>
-          </View> 
+          </View>
         </View>
       </BottomSheetFooter>
     ),
@@ -68,34 +85,33 @@ const BottomSheetReviews = ({ children, selectedItem, snapIndex, setSnapIndex }:
   );
 
   return (
-    <View style={styles.container}>
-      {children} 
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={snapIndex}
-        snapPoints={snapPoints}
-        enablePanDownToClose
-        onChange={handleSheetChanges}
-        handleStyle={{ marginBottom: -3, borderRadius: 15, }}
-        backgroundStyle={{ backgroundColor: COLORS.teal, borderRadius: 15, borderWidth: 1, borderColor: COLORS.tealDark }}
-        handleIndicatorStyle={{ backgroundColor: COLORS.brightteal, width: 30, height: 5 }} 
-        backdropComponent={renderBackdrop}
-        footerComponent={renderFooter}
-        keyboardBehavior="extend"
-        keyboardBlurBehavior="restore"
-        android_keyboardInputMode='adjustResize'
-        animationConfigs={animationConfigs}
-      >
-        <View style={styles.sheetContainer}> 
-          <View style={styles.titleView}>
-            <Text style={styles.titleText}>Reviews</Text>
-            <TouchableOpacity style={{ margin: 10, marginRight: 15, marginTop: 0, marginBottom: 5 }} onPress={() => bottomSheetRef.current.close()}>
-              <Icon name="close-outline" size={40} color={COLORS.brightteal}/>
-            </TouchableOpacity>
+    <Pressable onPressIn={handleTouchOutside} style={{ flex: 1 }}>
+      <View style={styles.container}>
+        {children} 
+        <BottomSheet
+          ref={bottomSheetRef}
+          index={snapIndex}
+          snapPoints={snapPoints}
+          enablePanDownToClose
+          onChange={handleSheetChanges}
+          handleStyle={{ marginBottom: -3, borderRadius: 15, }}
+          backgroundStyle={{ backgroundColor: COLORS.teal, borderRadius: 15, borderWidth: 1, borderColor: COLORS.tealDark }}
+          handleIndicatorStyle={{ backgroundColor: COLORS.brightteal, width: 30, height: 5 }} 
+          backdropComponent={renderBackdrop}
+          footerComponent={renderFooter}
+          animationConfigs={animationConfigs} 
+        >
+          <View style={styles.sheetContainer}> 
+            <View style={styles.titleView}>
+              <Text style={styles.titleText}>Reviews</Text>
+              <TouchableOpacity style={{ margin: 10, marginRight: 15, marginTop: 0, marginBottom: 5 }} onPress={() => bottomSheetRef.current.close()}>
+                <Icon name="close-outline" size={40} color={COLORS.brightteal}/>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </BottomSheet>
-    </View>
+        </BottomSheet>
+      </View>
+    </Pressable>
   );
 };
 
@@ -158,32 +174,27 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   textInputContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     borderWidth: 1,
-    borderColor: COLORS.tealwhite,
-    borderRadius: 50,
-    marginTop: 5,
-    width: "100%",
+    borderRadius: 15,
+    width: "80%",
     backgroundColor: COLORS.brightteal,
   },
   textInput: {
     color: COLORS.white,
     flex: 1,
     fontSize: 17,
-    marginLeft: 5,
     padding: 15,
-    borderRadius: 50,
     width: '100%'
   },
   searchIcon: {
     padding: 10,
     paddingHorizontal: 15,
-    // paddingLeft: 0,
     marginRight: 5,
     backgroundColor: COLORS.tealwhite,
-    borderRadius: 50
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: COLORS.tealwhite
   },
   closeIcon: {
     padding: 15,

@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: COLORS.tealwhite,
-    borderRadius: 50,
+    borderRadius: 15,
     marginTop: 0,
     width: '100%',
     backgroundColor: COLORS.brightteal
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     marginLeft: 5,
     padding: 15,
-    borderRadius: 50,
+    borderRadius: 15,
   },
 });
 
