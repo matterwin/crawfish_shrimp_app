@@ -49,9 +49,9 @@ const BottomSheetWrapper = ({ children }: Props) => {
         snapPoints={snapPoints}
         backdropComponent={renderBackdrop}
         onChange={handleSheetChanges}
-        handleStyle={{ marginBottom: 0, borderRadius: 15 }}
-        backgroundStyle={{ backgroundColor: COLORS.teal, borderRadius: 15, borderWidth: 1, borderColor: COLORS.tealDark }}
-        handleIndicatorStyle={{ backgroundColor: COLORS.brightteal, width: 30, height: 5 }}
+        handleStyle={{ backgroundColor: 'transparent' }}
+        handleIndicatorStyle={{ backgroundColor: COLORS.whiteDark, width: 30, height: 5 }}
+        backgroundStyle={{  backgroundColor: 'transparent' }}
       >
         <TouchableWithoutFeedback style={{flex: 1}}>
           <View style={styles.contentContainer}>
@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 15,
     position: 'relative',
     zIndex: 1,
+    paddingTop: 15,
   },
   textInputContainer: {
     flexDirection: 'row',

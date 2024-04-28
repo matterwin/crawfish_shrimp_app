@@ -78,9 +78,9 @@ const BottomSheetPrices = ({ children, selectedItem, snapIndex, setSnapIndex }: 
         snapPoints={snapPoints}
         enablePanDownToClose
         onChange={handleSheetChanges}
-        handleStyle={{ marginBottom: -3, borderRadius: 15, }}
-        backgroundStyle={{ backgroundColor: COLORS.teal, borderRadius: 15, borderWidth: 1, borderColor: COLORS.tealDark }}
-        handleIndicatorStyle={{ backgroundColor: COLORS.brightteal, width: 30, height: 5 }} 
+        handleStyle={{ backgroundColor: 'transparent' }}
+        handleIndicatorStyle={{ backgroundColor: COLORS.whiteDark, width: 30, height: 5 }}
+        backgroundStyle={{  backgroundColor: 'transparent' }} 
         backdropComponent={renderBackdrop}
         footerComponent={renderFooter}
         keyboardBehavior="extend"
@@ -91,17 +91,17 @@ const BottomSheetPrices = ({ children, selectedItem, snapIndex, setSnapIndex }: 
         <View style={styles.sheetContainer}> 
           <View style={styles.titleView}>
             <Text style={styles.titleText}>Boil Prices</Text>
-            <TouchableOpacity style={{ margin: 10, marginRight: 15, marginTop: 0, marginBottom: 5 }} onPress={() => bottomSheetRef.current.close()}>
+            <TouchableOpacity style={{ margin: 10, marginRight: 15 }} onPress={() => bottomSheetRef.current.close()}>
               <Icon name="close-outline" size={40} color={COLORS.brightteal}/>
             </TouchableOpacity>
           </View>
           <FlatListPrices  />
+          <ModalPriceUpdate
+            setModalVisible={setModalVisible}
+            modalVisible={modalVisible}
+            title={item.title}
+          />
         </View>
-        <ModalPriceUpdate
-          setModalVisible={setModalVisible}
-          modalVisible={modalVisible}
-          title={item.title}
-        />
       </BottomSheet>
     </View>
   );
@@ -113,14 +113,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     position: 'relative',
-    overflow: 'visible',
   },
   sheetContainer: {
     flex: 1,
     // margin: 15,
-    overflow: 'visible',
     marginTop: 0,
-    // gap: 15
+    // gap: 15,
+    backgroundColor: COLORS.teal,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
   },
   input: {
     marginTop: 8,
@@ -143,8 +144,6 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     margin: 10, 
     marginLeft: 15, 
-    marginTop: 0, 
-    marginBottom: 5,
     fontWeight: '700',
     fontSize: 18,
     textAlign: 'center'

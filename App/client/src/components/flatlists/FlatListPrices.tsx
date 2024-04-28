@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // paddingTop: 90,
-    paddingBottom: 100
+    // paddingBottom: 100
   },
   flatList: {
     flex: 1,

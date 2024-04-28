@@ -114,47 +114,49 @@ const BottomSheetVendor = ({ children, selectedItem }: Props & { selectedItem: I
             index={1}
             snapPoints={snapPoints}
             onChange={handleSheetChanges}
-            handleStyle={{ marginBottom: -3, borderRadius: 15, }}
-            backgroundStyle={{ backgroundColor: COLORS.teal, borderRadius: 15, borderWidth: 1, borderColor: COLORS.tealDark }}
-            handleIndicatorStyle={{ backgroundColor: COLORS.brightteal, width: 30, height: 5 }} 
+            handleStyle={{ backgroundColor: 'transparent', borderRadius: 15 }}
+            handleIndicatorStyle={{ backgroundColor: COLORS.whiteDark, width: 30, height: 5 }}
+            backgroundStyle={{  backgroundColor: 'transparent', borderRadius: 15 }}
           >
-          <BottomSheetScrollView style={{flex:1}}>
             <View style={styles.sheetContainer}>
-              <Rating
-                type='custom'
-                ratingCount={5}
-                readonly
-                tintColor={COLORS.teal} 
-                startingValue={3}
-                imageSize={30}
-                ratingColor={COLORS.green}
-                style={{ marginTop: -3 }}
-                ratingBackgroundColor={COLORS.tealwhite}
-              />
-              <View style={styles.titleView}>
-                <Text style={styles.titleText}>{item.title}</Text>
-              </View>
-              <View style={{ margin:-15, alignItems: 'center' }}>
-                <Text style={{ color: COLORS.white }}>{item.address}</Text>
-                <Text style={{ color: COLORS.green }}>{item.dist} mi</Text>
-              </View>
-              <Pressable
-                style={[styles.reviewsView, isPressed && styles.pressed, isPressedIn && { backgroundColor: 'rgba(255, 255, 255, 0.35)' }]}
-                onPress={handleSetSnapIndexForReviews}
-                onPressIn={() => setIsPressedIn(true)}
-                onPressOut={() => setIsPressedIn(false)}
-              >
-                <Text style={styles.reviewsText}>Reviews <Text style={styles.reviewsNumberCountText}>14</Text></Text>
-              </Pressable>
-              <View style={{ margin: 15, marginBottom: 0, alignItems: 'center' }}>
-                <Text style={{ color: COLORS.grey }}>Click on the type of price you want to update or visit</Text>
-              </View>
-              <PriceBox id={1} item={item} food={"crawfish"} type={"Boiled"} handleSetSnapIndexForPrices={handleSetSnapIndexForPrices} />
-              <PriceBox id={2} item={item} food={"crawfish"} type={"Live"} handleSetSnapIndexForPrices={handleSetSnapIndexForPrices} />
-              <PriceBox id={3} item={item} food={"shrimp"} type={"Boiled"} handleSetSnapIndexForPrices={handleSetSnapIndexForPrices} />
-              <PriceBox id={4} item={item} food={"shrimp"} type={"Live"} handleSetSnapIndexForPrices={handleSetSnapIndexForPrices} />
+              <BottomSheetScrollView style={{flex:1}}>
+                <View style={{ flex:1, display: 'flex', gap: 15, marginBottom: 150 }}>
+                  <Rating
+                    type='custom'
+                    ratingCount={5}
+                    readonly
+                    tintColor={COLORS.teal} 
+                    startingValue={3}
+                    imageSize={30}
+                    ratingColor={COLORS.green}
+                    style={{ paddingTop: 20 }}
+                    ratingBackgroundColor={COLORS.tealwhite}
+                  />
+                  <View style={styles.titleView}>
+                    <Text style={styles.titleText}>{item.title}</Text>
+                  </View>
+                  <View style={{ margin:-15, alignItems: 'center' }}>
+                    <Text style={{ color: COLORS.white }}>{item.address}</Text>
+                    <Text style={{ color: COLORS.green }}>{item.dist} mi</Text>
+                  </View>
+                  <Pressable
+                    style={[styles.reviewsView, isPressed && styles.pressed, isPressedIn && { backgroundColor: 'rgba(255, 255, 255, 0.35)' }]}
+                    onPress={handleSetSnapIndexForReviews}
+                    onPressIn={() => setIsPressedIn(true)}
+                    onPressOut={() => setIsPressedIn(false)}
+                  >
+                    <Text style={styles.reviewsText}>Reviews <Text style={styles.reviewsNumberCountText}>14</Text></Text>
+                  </Pressable>
+                  <View style={{ margin: 15, marginBottom: 0, alignItems: 'center' }}>
+                    <Text style={{ color: COLORS.grey }}>Click on the type of price you want to update or visit</Text>
+                  </View>
+                  <PriceBox id={1} item={item} food={"crawfish"} type={"Boiled"} handleSetSnapIndexForPrices={handleSetSnapIndexForPrices} />
+                  <PriceBox id={2} item={item} food={"crawfish"} type={"Live"} handleSetSnapIndexForPrices={handleSetSnapIndexForPrices} />
+                  <PriceBox id={3} item={item} food={"shrimp"} type={"Boiled"} handleSetSnapIndexForPrices={handleSetSnapIndexForPrices} />
+                  <PriceBox id={4} item={item} food={"shrimp"} type={"Live"} handleSetSnapIndexForPrices={handleSetSnapIndexForPrices} />
+                </View>
+              </BottomSheetScrollView>
             </View>
-            </BottomSheetScrollView>
           </BottomSheet>
         </View>
       </BottomSheetReviews>
@@ -171,10 +173,9 @@ const styles = StyleSheet.create({
   },
   sheetContainer: {
     flex: 1,
-    overflow: 'visible',
-    marginTop: 0,
-    gap: 15,
-    marginBottom: 150,
+    backgroundColor: COLORS.teal,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
   },
   titleView: {
     margin: 15,
