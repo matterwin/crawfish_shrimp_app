@@ -1,15 +1,33 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
+import React, { useCallback, useMemo, useRef, useState, useEffect } from 'react';
+import { 
+  View, 
+  Text, 
+  StyleSheet, 
+  TextInput, 
+  KeyboardAvoidingView, 
+  Keyboard, 
+  TouchableWithoutFeedback, 
+  TouchableOpacity, 
+  Dimensions 
+} from 'react-native';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { COLORS } from '../../constants';
 import CustomBackdrop from './CustomBackdrop';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ModalLocation from '../modals/ModalLocation.tsx';
 import ModalMainSearch from '../modals/ModalMainSearch.tsx';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  useDerivedValue,
+  withSpring,
+} from 'react-native-reanimated';
 
 type Props = {
   children: JSX.Element | JSX.Element[];
 }
+
+const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const BottomSheetWrapper = ({ children }: Props) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -18,7 +36,11 @@ const BottomSheetWrapper = ({ children }: Props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [snapIndex, setSnapIndex] = useState(0);
 
-  const snapPoints = useMemo(() => ['13%', '60%', '92%'], []);
+  const translateY = useSharedValue<number>(0);
+  const animatedPOIListPosition = useSharedValue<number>(SCREEN_HEIGHT);
+  const animatedPOIListIndex = useSharedValue<number>(0);
+
+  const snapPoints = useMemo(() => ['13%', '55%', '92%'], []);
 
   const handleSheetChanges = useCallback((index: number) => {
     setSnapIndex(index);
@@ -40,9 +62,14 @@ const BottomSheetWrapper = ({ children }: Props) => {
 		[]
 	);
 
+  const animatedStyles = useAnimatedStyle(() => ({
+    transform: [{ translateY: withSpring(animatedPOIListPosition.value - 100) }],
+  }));
+
   return (
     <View style={styles.container}>
       {children} 
+      <Animated.View style={[styles.box, animatedStyles]} />
       <BottomSheet
         ref={bottomSheetRef}
         index={1}
@@ -50,8 +77,10 @@ const BottomSheetWrapper = ({ children }: Props) => {
         backdropComponent={renderBackdrop}
         onChange={handleSheetChanges}
         handleStyle={{ backgroundColor: 'transparent' }}
-        handleIndicatorStyle={{ backgroundColor: COLORS.whiteDark, width: 30, height: 5 }}
+        handleIndicatorStyle={{ backgroundColor: COLORS.whiteDark, width: 50, height: 5 }}
         backgroundStyle={{  backgroundColor: 'transparent' }}
+        animatedPosition={animatedPOIListPosition}
+        animatedIndex={animatedPOIListIndex}
       >
         <TouchableWithoutFeedback style={{flex: 1}}>
           <View style={styles.contentContainer}>
@@ -113,6 +142,13 @@ const styles = StyleSheet.create({
     position: 'relative',
     zIndex: 1,
     paddingTop: 15,
+  },
+   box: {
+    height: 120,
+    width: '100%',
+    backgroundColor: '#b58df1',
+    borderRadius: 20,
+    ...StyleSheet.absoluteFillObject,
   },
   textInputContainer: {
     flexDirection: 'row',

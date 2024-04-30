@@ -79,7 +79,7 @@ const BottomSheetPrices = ({ children, selectedItem, snapIndex, setSnapIndex }: 
         enablePanDownToClose
         onChange={handleSheetChanges}
         handleStyle={{ backgroundColor: 'transparent' }}
-        handleIndicatorStyle={{ backgroundColor: COLORS.whiteDark, width: 30, height: 5 }}
+        handleIndicatorStyle={{ backgroundColor: COLORS.whiteDark, width: 50, height: 5 }}
         backgroundStyle={{  backgroundColor: 'transparent' }} 
         backdropComponent={renderBackdrop}
         footerComponent={renderFooter}

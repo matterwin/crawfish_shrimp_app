@@ -115,7 +115,7 @@ const BottomSheetVendor = ({ children, selectedItem }: Props & { selectedItem: I
             snapPoints={snapPoints}
             onChange={handleSheetChanges}
             handleStyle={{ backgroundColor: 'transparent', borderRadius: 15 }}
-            handleIndicatorStyle={{ backgroundColor: COLORS.whiteDark, width: 30, height: 5 }}
+            handleIndicatorStyle={{ backgroundColor: COLORS.whiteDark, width: 50, height: 5 }}
             backgroundStyle={{  backgroundColor: 'transparent', borderRadius: 15 }}
           >
             <View style={styles.sheetContainer}>

@@ -66,8 +66,7 @@ const BottomSheetReviews = ({ children, selectedItem, snapIndex, setSnapIndex }:
                 onChangeText={(text) => setUserInput(text)}
                 style={styles.textInput}
                 keyboardAppearance='dark'
-                keyboardBehavior="extend"
-                keyboardBlurBehavior="restore"
+                maxHeight={150}
                 multiline
                 // maxHeight={120}
                 onFocus={handleFocus}
@@ -95,11 +94,13 @@ const BottomSheetReviews = ({ children, selectedItem, snapIndex, setSnapIndex }:
           enablePanDownToClose
           onChange={handleSheetChanges}
           handleStyle={{ backgroundColor: 'transparent' }}
-          handleIndicatorStyle={{ backgroundColor: COLORS.whiteDark, width: 30, height: 5 }}
+          handleIndicatorStyle={{ backgroundColor: COLORS.whiteDark, width: 50, height: 5 }}
           backgroundStyle={{  backgroundColor: 'transparent' }} 
           backdropComponent={renderBackdrop}
           footerComponent={renderFooter}
           animationConfigs={animationConfigs} 
+          keyboardBehavior="extend"
+          keyboardBlurBehavior="none"
         >
           <View style={styles.sheetContainer}> 
             <View style={styles.titleView}>
