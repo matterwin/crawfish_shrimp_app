@@ -22,6 +22,8 @@ import Animated, {
   useDerivedValue,
   withSpring,
 } from 'react-native-reanimated';
+import CircleUserContainer from '../iconContainers/CircleUserContainer.tsx';
+import FilterBar from '../filters/FilterBar.tsx';
 
 type Props = {
   children: JSX.Element | JSX.Element[];
@@ -40,7 +42,7 @@ const BottomSheetWrapper = ({ children }: Props) => {
   const animatedPOIListPosition = useSharedValue<number>(SCREEN_HEIGHT);
   const animatedPOIListIndex = useSharedValue<number>(0);
 
-  const snapPoints = useMemo(() => ['13%', '55%', '92%'], []);
+  const snapPoints = useMemo(() => ['13%', '60%', '92%'], []);
 
   const handleSheetChanges = useCallback((index: number) => {
     setSnapIndex(index);
@@ -55,7 +57,8 @@ const BottomSheetWrapper = ({ children }: Props) => {
 		(props) => (
 			<BottomSheetBackdrop
 				{...props}
-        appearsOnIndex={0}
+        appearsOnIndex={2}
+        disappearsOnIndex={1}
         pressBehavior={0}
 			/>
 		),
@@ -63,13 +66,15 @@ const BottomSheetWrapper = ({ children }: Props) => {
 	);
 
   const animatedStyles = useAnimatedStyle(() => ({
-    transform: [{ translateY: withSpring(animatedPOIListPosition.value - 100) }],
+    transform: [{ translateY: withSpring(animatedPOIListPosition.value - 65) }],
   }));
 
   return (
     <View style={styles.container}>
       {children} 
-      <Animated.View style={[styles.box, animatedStyles]} />
+      <Animated.View style={[styles.box, animatedStyles]}>
+        <FilterBar />
+      </Animated.View>
       <BottomSheet
         ref={bottomSheetRef}
         index={1}
@@ -84,28 +89,32 @@ const BottomSheetWrapper = ({ children }: Props) => {
       >
         <TouchableWithoutFeedback style={{flex: 1}}>
           <View style={styles.contentContainer}>
-            <View style={styles.textInputContainer}>
-              <TouchableOpacity onPressIn={handleFocus}>
-                <Icon 
-                  name={'search'} 
-                  size={25} 
-                  color={COLORS.tealwhite} 
-                  style={styles.searchIcon} 
-                />
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', }}>
+              <View style={styles.textInputContainer}>
+                <View style={styles.textInputContainerOld}>
+                  <TouchableOpacity onPressIn={handleFocus}>
+                    <Icon 
+                      name={'search'} 
+                      size={25} 
+                      color={COLORS.tealwhite} 
+                      style={styles.searchIconOld} 
+                    />
+                  </TouchableOpacity>
+                  <TextInput
+                    ref={textInputRef}
+                    placeholder='Search Vendor'
+                    placeholderTextColor={'rgba(0, 0, 0, 0.6)'}
+                    autoCapitalize='none'
+                    onChangeText={(text) => setUserInput(text)}
+                    style={styles.textInput}
+                    keyboardAppearance='dark'
+                    onFocus={handleFocus}
+                  />
+                </View>
+              </View> 
+              <TouchableOpacity style={styles.searchIcon} onPress={() => console.log("pressed")}>
+                <CircleUserContainer /> 
               </TouchableOpacity>
-              <TextInput
-                ref={textInputRef}
-                placeholder='Search vendor' 
-                placeholderTextColor={'rgba(0, 0, 0, 0.6)'}
-                value={vendor} 
-                autoCapitalize='none' 
-                onChangeText={(text) => setVendor(text)}
-                color={COLORS.royalblue}
-                onFocus={handleFocus}
-                style={styles.textInput}
-                onChangeText={(text) => setVendor(text)}
-                keyboardAppearance='dark'
-              />
             </View>
             <View style={styles.bottomTab}>
               <View>
@@ -144,37 +153,40 @@ const styles = StyleSheet.create({
     paddingTop: 15,
   },
    box: {
-    height: 120,
-    width: '100%',
-    backgroundColor: '#b58df1',
+    // height: 120,
+    // width: '100%',
+    // backgroundColor: '#b58df1',
     borderRadius: 20,
+    justifyContent: 'flex-start',
     ...StyleSheet.absoluteFillObject,
   },
   textInputContainer: {
+    alignItems: 'center',
+    borderRadius: 15,
+    width: "80%",
+    backgroundColor: COLORS.brightteal,
+  },
+  textInputContainerOld: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: COLORS.tealwhite,
-    borderRadius: 15,
-    marginTop: 0,
     width: '100%',
-    backgroundColor: COLORS.brightteal
-  },
-  searchIcon: {
-    padding: 15,
-    paddingRight: 0
-  },
-  closeIcon: {
-    padding: 15,
-    paddingLeft: 0
   },
   textInput: {
     color: COLORS.white,
     flex: 1,
     fontSize: 17,
-    marginLeft: 5,
     padding: 15,
-    borderRadius: 15,
+    width: '100%'
+  },
+  searchIcon: {
+    marginRight: 5,
+  },
+  searchIconOld: {
+    paddingLeft: 15
+  },
+  closeIcon: {
+    padding: 15,
+    paddingLeft: 0
   },
 });
 

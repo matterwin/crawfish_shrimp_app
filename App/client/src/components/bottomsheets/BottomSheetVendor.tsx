@@ -111,7 +111,7 @@ const BottomSheetVendor = ({ children, selectedItem }: Props & { selectedItem: I
           {children} 
           <BottomSheet
             ref={bottomSheetRef}
-            index={1}
+            index={2}
             snapPoints={snapPoints}
             onChange={handleSheetChanges}
             handleStyle={{ backgroundColor: 'transparent', borderRadius: 15 }}

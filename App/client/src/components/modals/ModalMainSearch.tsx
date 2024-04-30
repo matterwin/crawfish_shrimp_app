@@ -97,9 +97,8 @@ const styles = StyleSheet.create({
   textInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
     borderColor: COLORS.tealwhite,
-    borderRadius: 50,
+    borderRadius: 15,
     marginTop: 5,
     width: "100%",
     backgroundColor: COLORS.brightteal,
@@ -113,11 +112,9 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   searchIcon: {
-    padding: 15,
-    paddingRight: 0
+    paddingLeft: 15,
   },
   closeIcon: {
-    padding: 15,
-    paddingLeft: 0
+    paddingLeft: 15,
   },
 });

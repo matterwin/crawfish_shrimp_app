@@ -9,10 +9,7 @@ import ModalNotification from '../../components/modals/ModalNotification.tsx';
 const Dummy = () => {
     return(
       <BottomSheetWrapper>
-        <FoodNav /> 
-        <View style={styles.locationContainer}>
-          <ModalLocation />
-        </View> 
+        <FoodNav />  
       </BottomSheetWrapper>
     );
 }
