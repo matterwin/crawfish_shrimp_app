@@ -17,7 +17,7 @@ const FilterBar = () => {
         <Icon name={'location-sharp'} size={35} color={COLORS.white} />
       </View>
       <View style={styles.iconContainer}>
-        <Icon name={'filter'} size={35} color={COLORS.white} />
+        <Icon name={'layers'} size={35} color={COLORS.white} />
       </View>
       <View style={styles.filterContainer}>
         <HorizontalFilterList

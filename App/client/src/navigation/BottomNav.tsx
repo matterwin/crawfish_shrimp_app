@@ -7,8 +7,22 @@ const Stack = createStackNavigator();
 
 const BottomNav = () => {
   return (
-    <Stack.Navigator initialRouteName='Dummy'>
-      <Stack.Screen name={"Dummy"} component={Dummy} options={{ headerShown: false }}/>
+    <Stack.Navigator 
+      initialRouteName='Dummy' 
+      screenOptions={{
+         headerTransparent: true
+      }}
+    >
+      <Stack.Screen name={"Dummy"} component={Dummy} 
+        options={{
+          headerStyle: {
+            backgroundColor: 'rgba(0, 0, 0, 0.1)',
+            elevation: 0,
+            shadowOpacity: 0, 
+            height: 20,
+          },
+          title: null,
+       }}/>
     </Stack.Navigator>
   );
 }

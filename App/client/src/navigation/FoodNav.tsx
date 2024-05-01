@@ -53,8 +53,9 @@ export default FoodNav;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: COLORS.green
+    backgroundColor: COLORS.green,
     // backgroundColor: 'transparent'
+    height: 10,
   },
   linearGradient: {
     flex: 1,
