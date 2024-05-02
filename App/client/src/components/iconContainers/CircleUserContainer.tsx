@@ -2,14 +2,14 @@ import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import { COLORS } from '../../constants/index.tsx';
 
-const CircleUserContainer = ({ food }) => {
+const CircleUserContainer = ({ food, size, home }) => {
   path = require('../../../assets/pictures/user.png'); 
   return (
     <View style={styles.container}>
-      <View style={styles.circle}>
+      <View style={[styles.circle, {  width: size+20, height: size+20, backgroundColor: (home) ? COLORS.teal : COLORS.tealwhite }]}>
         <Image
           source={path}
-          style={styles.image}
+          style={[styles.image, { width: size, height: size }]}
         />
       </View>
     </View>
@@ -25,16 +25,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   circle: {
-    width: 50,
-    height: 50,
+    // width: 50,
+    // height: 50,
     borderRadius: 75,
     backgroundColor: COLORS.tealwhite,
     justifyContent: 'center',
     alignItems: 'center',
   },
   image: {
-    width: 30,
-    height: 30,
     resizeMode: 'contain',
   },
 });

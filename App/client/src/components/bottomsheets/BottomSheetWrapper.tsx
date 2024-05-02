@@ -113,7 +113,7 @@ const BottomSheetWrapper = ({ children }: Props) => {
                 </View>
               </View> 
               <TouchableOpacity style={styles.searchIcon} onPress={() => console.log("pressed")}>
-                <CircleUserContainer /> 
+                <CircleUserContainer size={30}/> 
               </TouchableOpacity>
             </View>
             <View style={styles.bottomTab}>

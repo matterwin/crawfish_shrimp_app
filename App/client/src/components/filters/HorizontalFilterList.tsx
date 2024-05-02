@@ -13,12 +13,11 @@ interface Props {
 }
 
 const filtersData: Filter[] = [
-  { id: '1', title: 'Cheapest' },
-  { id: '2', title: 'Most Expensive' },
-  { id: '3', title: 'Closest' },
-  { id: '4', title: 'Furthest' },
-  { id: '5', title: 'Best Ratings' },
-  { id: '6', title: 'Worst Ratings' },
+  { id: '1', title: 'Boiled' },
+  { id: '2', title: 'Live' },
+  { id: '3', title: 'Distance' },
+  { id: '4', title: 'Price' },
+  { id: '5', title: 'Rating' },
 ];
 
 const HorizontalFilterList: React.FC<Props> = ({ selectedFilter, onSelectFilter }) => {
@@ -61,6 +60,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 5,
+    paddingHorizontal: 15
   },
   selectedItem: {
     backgroundColor: COLORS.orange

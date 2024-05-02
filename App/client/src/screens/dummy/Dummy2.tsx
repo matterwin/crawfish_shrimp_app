@@ -44,7 +44,7 @@ export default Dummy2;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.deepgreen
+    backgroundColor: COLORS.teal
   },
   overlay: {
     position: "absolute",
