@@ -10,7 +10,9 @@ const BottomNav = () => {
     <Stack.Navigator 
       initialRouteName='Dummy' 
       screenOptions={{
-         headerTransparent: true
+         headerTransparent: false,
+         headerBlurEffect: false,
+         headerShown: false
       }}
     >
       <Stack.Screen name={"Dummy"} component={Dummy} 

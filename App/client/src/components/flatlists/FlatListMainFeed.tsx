@@ -3,6 +3,8 @@ import { FlatList, StyleSheet, Text, View, TouchableOpacity, Pressable} from 're
 import { COLORS } from '../../constants/index.tsx';
 import IconContainer from '../../components/iconContainers/IconContainer.tsx';
 import { useNavigation } from '@react-navigation/native';
+import { Rating } from 'react-native-ratings';
+import CircleUserContainer from '../iconContainers/CircleUserContainer.tsx';
 
 type Item = {
   id: string;
@@ -39,10 +41,24 @@ const ItemComponent = ({ item, isFirst, isLast }: { item: Item; isFirst: boolean
       <View style={[styles.item, isFirst && styles.firstItem, isLast && styles.lastItem]}>
         <View style={[styles.priceView, { borderRightWidth: 1 }]}>
           <Text style={styles.priceText}>{item.boilPrice}</Text>
+          <View style={styles.userAndDateUpdatedView}>
+            <CircleUserContainer />
+            <Text>2 hours ago</Text>
+          </View>
         </View>
         <View style={styles.detailsView}>
           <Text style={styles.titleText}>{item.title}</Text>
           <Text>{item.address}</Text>
+          <Rating
+            type='custom'
+            ratingCount={item.stars}
+            readonly
+            tintColor={COLORS.teal} 
+            startingValue={3}
+            imageSize={30}
+            ratingColor={COLORS.green}
+            ratingBackgroundColor={COLORS.teal}
+          />
         </View>
         <View style={[styles.priceView, { borderLeftWidth: 1 }]}>
           <Text style={styles.priceText}>{item.boilPrice}</Text>
@@ -82,12 +98,14 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: COLORS.brighteal,
+    backgroundColor: COLORS.tealwhite,
     borderBottomWidth: 1,
-    height: 100
+    borderTopWidth: 1,
+    height: 150,
+    marginBottom: 30,
   },
   firstItem: {
-    marginTop: 90,
+    marginTop: 130,
     borderTopWidth: 1,
   },
   lastItem: {
@@ -96,7 +114,6 @@ const styles = StyleSheet.create({
   priceView: {
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 15,
     width: '20%'
   },
   titleText: {
@@ -105,6 +122,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: '600',
     color: 'white',
+    paddingHorizontal: 15
   },
   detailsView: {
     justifyContent: 'center',
@@ -115,6 +133,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 18,
     color: COLORS.white
+  },
+  userAndDateUpdatedView: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 5,
+    paddingHorizontal: 2
   },
 });
 

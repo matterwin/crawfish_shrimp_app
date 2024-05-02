@@ -17,7 +17,7 @@ const BottomSheetReviews = ({ children, selectedItem, snapIndex, setSnapIndex }:
   const [userInput, setUserInput] = useState('');
   const [inputFocused, setInputFocused] = useState(false);
 
-  const snapPoints = useMemo(() => ['70%', '85%'], []);
+  const snapPoints = useMemo(() => ['80%', '90%'], []);
 
   const handleSheetChanges = useCallback((index: number) => {
     setSnapIndex(index);

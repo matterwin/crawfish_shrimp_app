@@ -1,18 +1,27 @@
 import React, { useCallback, useMemo, useRef, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView, Keyboard, TouchableOpacity, Pressable, Animated } from 'react-native';
+import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView, Keyboard, TouchableOpacity, Pressable, Dimensions, Image } from 'react-native';
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { COLORS } from '../../constants';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Stars from '../ratings/Stars.tsx';
-import { Rating, AirbnbRating } from 'react-native-ratings';
+import { Rating } from 'react-native-ratings';
 import BottomSheetReviews from './BottomSheetReviews.tsx';
 import BottomSheetPrices from './BottomSheetPrices.tsx';
 import CircleIconContainer from '../iconContainers/CircleIconContainer.tsx';
 import * as Haptics from 'expo-haptics';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  useDerivedValue,
+  withSpring,
+} from 'react-native-reanimated';
+import FilterBar from '../filters/FilterBar.tsx';
 
 type Props = {
   children: JSX.Element | JSX.Element[];
 }
+
+const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const BottomSheetVendor = ({ children, selectedItem }: Props & { selectedItem: Item }) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -23,13 +32,21 @@ const BottomSheetVendor = ({ children, selectedItem }: Props & { selectedItem: I
   const [isPressed, setIsPressed] = useState(false);
   const [isPressedIn, setIsPressedIn] = useState(false);
 
+  const aspectRatioWidth = (9 / 16) * SCREEN_WIDTH;
+
   const [isPressedPrices, setIsPressedPrices] = useState(false);
   const [pressedPriceId, setPressedPriceId] = useState(-1);
 
-  const snapPoints = useMemo(() => ['13%', '70%', '85%'], []);
+  const translateY = useSharedValue<number>(0);
+  const animatedPOIListPosition = useSharedValue<number>(SCREEN_HEIGHT);
+  const animatedPOIListIndex = useSharedValue<number>(0);
+
+  const path = require('../../../assets/pictures/crawfish_background.jpg');
+
+  const snapPoints = useMemo(() => ['20%', '80%'], []);
 
   const handleSheetChanges = useCallback((index: number) => {
-    setSnapIndex(index-1);
+    setSnapIndex(index);
   }, []); 
 
   const handleSetSnapIndexForReviews = () => {
@@ -59,7 +76,21 @@ const BottomSheetVendor = ({ children, selectedItem }: Props & { selectedItem: I
     setSnapIndexForPrices(snapIndex);
     handlePressPrices();
   };
-  
+
+  const animatedStyles = useAnimatedStyle(() => {
+    if(animatedPOIListPosition) {
+
+    }
+    return {
+      transform: [{ translateY: withSpring(animatedPOIListPosition.value - 270) }]
+    };
+  }, []);  
+
+  useEffect(() => {
+    console.log(animatedPOIListPosition.value);
+    console.log(SCREEN_HEIGHT)
+  },[animatedPOIListPosition.value])
+
   const PriceBox = ({ id, item, food, type, handleSetSnapIndexForPrices }) => {
     const foodTypeStyle = food === "crawfish" ? styles.underlineC : styles.underlineS;
 
@@ -79,7 +110,7 @@ const BottomSheetVendor = ({ children, selectedItem }: Props & { selectedItem: I
             <CircleIconContainer food={food} />
           </View>
         </View>
-        <Animated.View
+        <View
           style={[
             styles.rowContainer, 
             styles.secondRowContainer, 
@@ -99,9 +130,14 @@ const BottomSheetVendor = ({ children, selectedItem }: Props & { selectedItem: I
             <Text style={styles.secondaryPriceText}>${item.boilPrice}</Text>
             <Text style={styles.secondaryText}>m3ttwin</Text>
           </View>
-        </Animated.View>
+        </View>
       </Pressable>
     );
+  };
+
+
+  const calcHeight = () => {
+    return SCREEN_HEIGHT * 0.3
   };
 
   return (
@@ -109,14 +145,25 @@ const BottomSheetVendor = ({ children, selectedItem }: Props & { selectedItem: I
       <BottomSheetReviews selectedItem={selectedItem} snapIndex={snapIndexForReviews} setSnapIndex={setSnapIndexForReviews}>
         <View style={styles.container}>
           {children} 
+          <Animated.View style={[styles.box, animatedStyles, { height: {calcHeight} }]}>
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <Image
+              source={path}
+              style={[styles.image, { aspectRatio: 16 / 9 }]}
+              resizeMode="cover"
+            />
+            </View>
+          </Animated.View>
           <BottomSheet
             ref={bottomSheetRef}
-            index={2}
+            index={1}
             snapPoints={snapPoints}
             onChange={handleSheetChanges}
             handleStyle={{ backgroundColor: 'transparent', borderRadius: 15 }}
             handleIndicatorStyle={{ backgroundColor: COLORS.whiteDark, width: 50, height: 5 }}
             backgroundStyle={{  backgroundColor: 'transparent', borderRadius: 15 }}
+            animatedPosition={animatedPOIListPosition}
+            animatedIndex={animatedPOIListIndex}
           >
             <View style={styles.sheetContainer}>
               <BottomSheetScrollView style={{flex:1}}>
@@ -208,6 +255,15 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontWeight: '600',
     fontSize: 16,
+  },
+  box: {
+    // height: SCREEN_HEIGHT,
+    // backgroundColor: '#b58df1', 
+    ...StyleSheet.absoluteFillObject,
+  },
+  image: {
+    width: "100%",
+    height: "100%",
   },
   touchableOpacity: {
     marginBottom: -15,

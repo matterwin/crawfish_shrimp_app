@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
     paddingTop: 15,
   },
-   box: {
+  box: {
     // height: 120,
     // width: '100%',
     // backgroundColor: '#b58df1',

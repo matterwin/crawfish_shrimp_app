@@ -23,19 +23,42 @@ const FoodNav = () => {
           headerTransparent: true,
           tabBarGap: 0,
           tabBarStyle: {
-            width: 200, 
+            width: "100%", // Full width
             backgroundColor: 'transparent',
             position: 'absolute',
-            right: 0,
+            // right: '50%',
             paddingTop: 50,
+            // left: '50%',
           },
-          tabBarLabelStyle: { fontSize: 16, fontWeight: 'bold', padding: 0, margin: 0, },
-          tabBarItemStyle: { width: 95, padding: 0, margin: 0, paddingVertical: 0, marginVertical: 0 },
+          tabBarContentContainerStyle: {
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: 5,
+            backgroundColor: 'rgba(120, 167, 176, 0.5)',
+            borderWidth: 1,
+            borderColor: COLORS.grey,
+            marginHorizontal: '20%',
+            // display:'none'
+          },
+          tabBarLabelStyle: { 
+            fontSize: 18, 
+            fontWeight: 'bold', 
+            padding: 0,
+            margin: 0, 
+            textTransform: "none" 
+          },
+          tabBarItemStyle: { 
+            width: 95, 
+            padding: 0, 
+            margin: 0, 
+            paddingVertical: 0,
+            marginVertical: 0, 
+          },
           tabBarIndicatorStyle: {
             backgroundColor: COLORS.white,
             width: 25,
-            left: '20%',
-            marginBottom: 5
+            left: '73%',
+            marginBottom: 8,
           },        
           tabBarActiveTintColor: COLORS.white,
           tabBarInactiveTintColor: COLORS.grey,

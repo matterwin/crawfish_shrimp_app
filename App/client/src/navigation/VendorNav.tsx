@@ -22,7 +22,6 @@ const VendorNav = ({ navigation, route }) => {
     Linking.openURL(url);
   };
 
-
   return (
     <Stack.Navigator 
       initialRouteName='Dummy4' 
@@ -37,7 +36,7 @@ const VendorNav = ({ navigation, route }) => {
             backgroundColor: 'transparent',
             elevation: 0,
             shadowOpacity: 0, 
-            height: 100,
+            // height: 100,
           },
           title: null,
           headerLeft: () => (
