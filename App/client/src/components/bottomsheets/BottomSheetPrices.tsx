@@ -23,13 +23,12 @@ type Props = {
 }
 
 const BottomSheetPrices = ({ children, selectedItem, snapIndex, setSnapIndex }: Props & { selectedItem: Item, snapIndex: number }) => {
-  const textInputRef = useRef<TextInput>(null);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [item, setItem] = useState(selectedItem);
   const [userInput, setUserInput] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
 
-  const snapPoints = useMemo(() => ['70%', '85%'], []);
+  const snapPoints = useMemo(() => ['80%', '87%'], []);
 
   const handleSheetChanges = useCallback((index: number) => {
     setSnapIndex(index);
@@ -89,9 +88,36 @@ const BottomSheetPrices = ({ children, selectedItem, snapIndex, setSnapIndex }: 
         animationConfigs={animationConfigs}
       >
         <View style={styles.sheetContainer}> 
+          <View style={styles.titleLocationView}>
+            <View>
+              <View style={{ padding: 3, borderRadius: 10, backgroundColor: COLORS.orange}}>
+                <Icon 
+                  name={'location-sharp'} 
+                  size={25} 
+                  color={COLORS.white} 
+                />
+              </View>
+            </View>
+            <View style={styles.locationAndAddressView}>
+              <Text 
+                style={[styles.titleLocationText, { fontSize: 14 }]} 
+                numberOfLines={1} 
+                ellipsizeMode="tail"
+              >
+                {item.title}
+              </Text>
+              <Text 
+                style={[styles.titleLocationText, { color: COLORS.brightteal, fontWeight: 500 }]} 
+                numberOfLines={1} 
+                ellipsizeMode="tail"
+              >
+                {item.address}
+              </Text>
+            </View>
+          </View>
           <View style={styles.titleView}>
-            <Text style={styles.titleText}>Boil Prices</Text>
-            <TouchableOpacity style={{ margin: 10, marginRight: 15 }} onPress={() => bottomSheetRef.current.close()}>
+            <Text style={styles.titleText}>Boiled Crawfish • Prices</Text>
+            <TouchableOpacity style={{ margin: 10, marginRight: 10, marginTop: 5, }} onPress={() => bottomSheetRef.current.close()}>
               <Icon name="close-outline" size={40} color={COLORS.brightteal}/>
             </TouchableOpacity>
           </View>
@@ -140,13 +166,34 @@ const styles = StyleSheet.create({
     borderColor: COLORS.tealDark,
     flexDirection: 'row',
   },
+  titleLocationView: {
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    borderColor: COLORS.tealwhite,
+    borderColor: COLORS.tealDark,
+    flexDirection: 'row',
+    margin: 10, 
+    marginLeft: 15,
+    marginBottom: 0,
+    gap: 15,
+    width: '100%',
+    marginRight: 150,
+  },
   titleText: {
     color: COLORS.white,
     margin: 10, 
     marginLeft: 15, 
+    marginTop: 5,
     fontWeight: '700',
     fontSize: 18,
     textAlign: 'center'
+  },
+  titleLocationText: {
+    color: COLORS.white,
+    fontWeight: '700',
+    fontSize: 12,
+    textAlign: 'center',
+    maxWidth: '80%'
   },
   reviewsView: {
     marginTop: 30,
@@ -164,38 +211,6 @@ const styles = StyleSheet.create({
     padding: 15,
     alignItems: 'center',
     marginBottom: 10,
-  },
-  textInputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    borderWidth: 1,
-    borderColor: COLORS.tealwhite,
-    borderRadius: 50,
-    marginTop: 5,
-    width: "100%",
-    backgroundColor: COLORS.brightteal,
-  },
-  textInput: {
-    color: COLORS.white,
-    flex: 1,
-    fontSize: 17,
-    marginLeft: 5,
-    padding: 15,
-    borderRadius: 50,
-    width: '100%'
-  },
-  searchIcon: {
-    padding: 10,
-    paddingHorizontal: 15,
-    // paddingLeft: 0,
-    marginRight: 5,
-    backgroundColor: COLORS.tealwhite,
-    borderRadius: 50
-  },
-  closeIcon: {
-    padding: 15,
-    paddingLeft: 0
   },
   closeParentView: {
     borderRadius: 15,
@@ -226,6 +241,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 21,
     color: COLORS.orange
+  },
+  locationAndAddressView: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    width: '90%',
   },
 });
 

@@ -104,6 +104,15 @@ const BottomSheetReviews = ({ children, selectedItem, snapIndex, setSnapIndex }:
         >
           <View style={styles.sheetContainer}> 
             <View style={styles.titleView}>
+            <View style={{ paddingLeft: 15 }}>
+              <View style={{ padding: 3,borderRadius: 10, backgroundColor: COLORS.orange}}>
+            <Icon 
+              name={'location-sharp'} 
+              size={25} 
+              color={COLORS.white} 
+            />
+            </View>
+            </View>
               <Text style={styles.titleText}>Reviews</Text>
               <TouchableOpacity style={{ margin: 10, marginRight: 15 }} onPress={() => bottomSheetRef.current.close()}>
                 <Icon name="close-outline" size={40} color={COLORS.brightteal}/>
