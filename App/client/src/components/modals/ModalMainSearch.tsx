@@ -5,12 +5,14 @@ import { COLORS } from '../../constants';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ChosenCityAutoComplete from '../autocompletes/ChosenCityAutoComplete.tsx';
 import CircleUserContainer from '../iconContainers/CircleUserContainer.tsx';
+import ModalLocation from '../modals/ModalLocation.tsx';
 
 const ModalMainSearch = ({ modalVisible, setModalVisible, setSnapIndex, snapToIndex }) => {
   const textInputRef = useRef<TextInput>(null);
   const textLocationInputRef = useRef<TextInput>(null);
   const [userInput, setUserInput] = useState('');
   const [location, setLocation] = useState('');
+  const [modalLocationVisible, setModalLocationVisible] = useState(false);
 
   const handleClosingModal = () => {
     setModalVisible(false);
@@ -35,78 +37,76 @@ const ModalMainSearch = ({ modalVisible, setModalVisible, setSnapIndex, snapToIn
         visible={modalVisible}
         onRequestClose={handleClosingModal}
       >
-        <BlurView intensity={40} style={{flex: 1}}>
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', }}>
-                <View style={styles.textInputContainer}>
-                  <View style={styles.textInputContainerOld}>
-                    <TouchableOpacity onPress={handleClosingModal}>
-                      <Icon 
-                        name={'arrow-back'} 
-                        size={25} 
-                        color={COLORS.tealwhite} 
-                        style={styles.searchIconOld} 
-                      />
-                    </TouchableOpacity>
-                    <TextInput
-                      ref={textInputRef}
-                      placeholder='Search Vendor'
-                      placeholderTextColor={'rgba(0, 0, 0, 0.6)'}
-                      autoCapitalize='none'
-                      onChangeText={(text) => setUserInput(text)}
-                      style={styles.textInput}
-                      keyboardAppearance='dark'
-                      onFocus={handleFocus}
-                      autoFocus={true}
-                      value={userInput}
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', }}>
+              <View style={styles.textInputContainer}>
+                <View style={styles.textInputContainerOld}>
+                  <TouchableOpacity onPress={handleClosingModal}>
+                    <Icon 
+                      name={'arrow-back'} 
+                      size={25} 
+                      color={COLORS.tealwhite} 
+                      style={styles.searchIconOld} 
                     />
-                    {userInput !== '' &&
-                      <TouchableOpacity onPress={() => setUserInput('')}>
-                        <Icon name="close" size={25} color={COLORS.tealwhite} style={styles.closeIcon} />
-                      </TouchableOpacity>
-                    }
-                  </View>
-                </View> 
-                <TouchableOpacity style={styles.searchIcon} onPress={handleClosingModal}>
-                  <Text style={styles.cancelText}>Cancel</Text> 
-                </TouchableOpacity>
-              </View>
+                  </TouchableOpacity>
+                  <TextInput
+                    ref={textInputRef}
+                    placeholder='Search Vendor'
+                    placeholderTextColor={'rgba(0, 0, 0, 0.6)'}
+                    autoCapitalize='none'
+                    onChangeText={(text) => setUserInput(text)}
+                    style={styles.textInput}
+                    keyboardAppearance='dark'
+                    onFocus={handleFocus}
+                    autoFocus={true}
+                    value={userInput}
+                  />
+                  {userInput !== '' &&
+                    <TouchableOpacity onPress={() => setUserInput('')}>
+                      <Icon name="close" size={25} color={COLORS.tealwhite} style={styles.closeIcon} />
+                    </TouchableOpacity>
+                  }
+                </View>
+              </View> 
+              <TouchableOpacity style={styles.searchIcon} onPress={handleClosingModal}>
+                <Text style={styles.cancelText}>Cancel</Text> 
+              </TouchableOpacity>
+            </View>
 
-              <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'flex-start', width: '100%', }}>
-                <View style={styles.textLocationInputContainer}>
-                  <View style={styles.textLocationInputContainerOld}>
-                    <TouchableOpacity onPress={handleClosingModal}>
-                      <View style={{ paddingLeft: 15 }}>
-                        <View style={{ padding: 3,borderRadius: 10, backgroundColor: COLORS.orange}}>
-                      <Icon 
-                        name={'location-sharp'} 
-                        size={25} 
-                        color={COLORS.white} 
-                      />
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'flex-start', width: '100%', }}>
+              <View style={styles.textLocationInputContainer}>
+                <View style={styles.textLocationInputContainerOld}>
+                  <Pressable onPress={() => setModalLocationVisible(true)}>
+                    <View style={{ paddingLeft: 15 }}>
+                      <View style={{ padding: 3,borderRadius: 10, backgroundColor: COLORS.orange}}>
+                        <Icon 
+                          name={'location-sharp'} 
+                          size={25} 
+                          color={COLORS.white} 
+                        />
                       </View>
-                      </View>
-                    </TouchableOpacity>
-                    <TextInput
-                      ref={textLocationInputRef}
-                      placeholder='Current Location'
-                      placeholderTextColor={'rgba(0, 0, 0, 0.6)'}
-                      autoCapitalize='none'
-                      onChangeText={(text) => setUserInput(text)}
-                      style={[styles.textInput, {  }]}
-                      keyboardAppearance='dark'
-                      onFocus={handleFocus}
-                      value={userInput}
-                      editable={false}
-                    />
-                  </View>
-                </View> 
-              </View>
+                    </View>
+                  </Pressable>
+                  <Pressable
+                    style={[styles.textInput, {  }]}
+                    onPress={() => setModalLocationVisible(true)}
+                  >
+                    <Text style={{ fontSize: 17, color: 'rgba(0, 0, 0, 0.6)'}}>Current Location</Text>
+                  </Pressable>
+                </View>
+              </View> 
             </View>
           </View>
-        </BlurView>
+        </View>
+        <View>
+          <ModalLocation
+            setModalVisible={setModalLocationVisible}
+            modalVisible={modalLocationVisible}
+          />
+        </View>
       </Modal>
-     </View>
+    </View>
   );
 };
 

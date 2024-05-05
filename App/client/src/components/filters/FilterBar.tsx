@@ -1,21 +1,26 @@
 import React, { useState } from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, Pressable } from 'react-native';
 import { COLORS } from '../../constants/index.tsx';
 import Icon from 'react-native-vector-icons/Ionicons';
 import HorizontalFilterList from './HorizontalFilterList';
 
-const FilterBar = () => {
+const FilterBar = ({setModalVisible, snapToIndex}) => {
   const [selectedFilter, setSelectedFilter] = useState(null);
 
   const handleSelectFilter = (filterId) => {
     setSelectedFilter(filterId);
   };
 
+  const handlePress = () => {
+    snapToIndex?.(1);
+    setModalVisible(true);
+  };
+
   return (
     <View style={styles.container}>
-      <View style={styles.iconContainer}>
+      <Pressable onPress={handlePress} style={styles.iconContainer}>
         <Icon name={'location-sharp'} size={35} color={COLORS.white} />
-      </View>
+      </Pressable>
       <View style={styles.iconContainer}>
         <Icon name={'layers'} size={35} color={COLORS.white} />
       </View>

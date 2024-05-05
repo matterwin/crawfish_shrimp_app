@@ -7,8 +7,7 @@ import * as Location from 'expo-location';
 import ModalAllowLocation from './ModalAllowLocation';
 import ModalCityChooser from './ModalCityChooser.tsx';
 
-const ModalLocation = () => {
-  const [modalVisible, setModalVisible] = useState(false);
+const ModalLocation = ({ modalVisible, setModalVisible, setSnapIndex, snapToIndex }) => {
   const [llocation, setLocation] = useState(''); 
   const [prevl, setPrevl] = useState(''); 
   const [errorMsg, setErrorMsg] = useState(null);
@@ -18,9 +17,11 @@ const ModalLocation = () => {
   const [longitude, setLongitude] = useState(null);
   const [city, setCity] = useState('');
 
-  useEffect(() => {
-    console.log(showModalAllowLocation);
-  },[showModalAllowLocation]);
+  const handleClosingModal = () => {
+    setModalVisible(false);
+    snapToIndex?.(0);
+    setModalVisible(!modalVisible);
+  };
 
   const handleOnPress = () => {
     setModalVisible(true);
@@ -67,9 +68,10 @@ const ModalLocation = () => {
     <View style={styles.centeredView}>
       <Modal
         animationType="slide"
-        transparent={true}
+        transparent={false}
         visible={modalVisible}
-        onRequestClose={() => { setModalVisible(!modalVisible); }}>
+        onRequestClose={handleClosingModal}
+      >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>          
             <View style={styles.contentModalMinusCloseView}>
@@ -122,7 +124,7 @@ const ModalLocation = () => {
               </View>
             </View>
             <View style={[styles.closeParentView, styles.shadowView]}>
-              <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={styles.bottomCloseContainer}>
+              <TouchableOpacity onPress={handleClosingModal} style={styles.bottomCloseContainer}>
                 <Text style={styles.closeText}>CLOSE</Text> 
               </TouchableOpacity>
             </View>
@@ -141,11 +143,6 @@ const ModalLocation = () => {
           } 
         </View>
       </Modal>
-      <Pressable
-        style={[styles.button]}
-        onPress={handleOnPress}>
-        <Icon name="location-sharp" size={55} color={COLORS.orange} style={styles.modalIcon} />
-      </Pressable>
     </View>
   );
 };

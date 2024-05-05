@@ -1,5 +1,7 @@
 export default {
-    deepgreen: '#0b2226',
+    deepgreen: '#091E22',
+    mudGreen: '#182729',
+    mudGreen2: '#23383b',
     royalblue: '#0000ff',
     lightblue: '#0062ff',
     teal: '#1e4147',

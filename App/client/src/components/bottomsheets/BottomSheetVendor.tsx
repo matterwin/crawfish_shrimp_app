@@ -82,7 +82,7 @@ const BottomSheetVendor = ({ children, selectedItem }: Props & { selectedItem: I
 
     }
     return {
-      transform: [{ translateY: withSpring(animatedPOIListPosition.value - 270) }]
+      transform: [{ translateY: animatedPOIListPosition.value - 270 }]
     };
   }, []);  
 

@@ -142,21 +142,10 @@ const styles = StyleSheet.create({
   },
   sheetContainer: {
     flex: 1,
-    // margin: 15,
     marginTop: 0,
-    // gap: 15,
     backgroundColor: COLORS.teal,
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
-  },
-  input: {
-    marginTop: 8,
-    marginBottom: 10,
-    borderRadius: 10,
-    fontSize: 16,
-    lineHeight: 20,
-    padding: 8,
-    backgroundColor: 'rgba(151, 151, 151, 0.25)',
   },
   titleView: {
     alignItems: 'center',
@@ -194,17 +183,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: 'center',
     maxWidth: '80%'
-  },
-  reviewsView: {
-    marginTop: 30,
-    backgroundColor: COLORS.grey,
-    borderRadius: 10,
-    padding: 20,
-  },
-  reviewsText: {
-    color: COLORS.white,
-    fontWeight: '600',
-    fontSize: 16,
   },
   modalView: {
     flex: 1,

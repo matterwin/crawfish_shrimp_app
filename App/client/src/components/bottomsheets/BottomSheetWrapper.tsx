@@ -36,6 +36,7 @@ const BottomSheetWrapper = ({ children }: Props) => {
   const textInputRef = useRef<TextInput>(null);
   const [vendor, setVendor] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalLocationVisible, setModalLocationVisible] = useState(false);
   const [snapIndex, setSnapIndex] = useState(0);
 
   const translateY = useSharedValue<number>(0);
@@ -50,6 +51,7 @@ const BottomSheetWrapper = ({ children }: Props) => {
 
   const handleFocus = () => {
     setModalVisible(true);
+    bottomSheetRef.current?.snapToIndex(1)
     Keyboard.dismiss();
   };
 
@@ -57,8 +59,11 @@ const BottomSheetWrapper = ({ children }: Props) => {
 		(props) => (
 			<BottomSheetBackdrop
 				{...props}
-        appearsOnIndex={2}
-        disappearsOnIndex={1}
+        style={[
+          props.style,
+          { backgroundColor: 'transparent' },
+        ]}
+        appearsOnIndex={1}
         pressBehavior={0}
 			/>
 		),
@@ -73,7 +78,7 @@ const BottomSheetWrapper = ({ children }: Props) => {
     <View style={styles.container}>
       {children} 
       <Animated.View style={[styles.box, animatedStyles]}>
-        <FilterBar />
+        <FilterBar setModalVisible={setModalLocationVisible} snapToIndex={bottomSheetRef.current?.snapToIndex}/>
       </Animated.View>
       <BottomSheet
         ref={bottomSheetRef}
@@ -123,13 +128,21 @@ const BottomSheetWrapper = ({ children }: Props) => {
             </View>
           </View> 
         </TouchableWithoutFeedback>
+      </BottomSheet>
+      <View>
         <ModalMainSearch
           setModalVisible={setModalVisible}
           modalVisible={modalVisible}
           setSnapIndex={setSnapIndex}
           snapToIndex={bottomSheetRef.current?.snapToIndex}
-        />      
-      </BottomSheet>
+        />
+        <ModalLocation
+          setModalVisible={setModalLocationVisible}
+          modalVisible={modalLocationVisible}
+          setSnapIndex={setSnapIndex}
+          snapToIndex={bottomSheetRef.current?.snapToIndex}
+        />
+      </View>
     </View>
   );
 };

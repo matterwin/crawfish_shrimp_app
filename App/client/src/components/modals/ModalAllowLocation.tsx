@@ -7,7 +7,7 @@ import * as Linking from 'expo-linking';
 const ModalAllowLocation = ({ setShowModalAllowLocation }) => {
   const [modalVisible, setModalVisible] = useState(true);
   
-  const handleClosingModal = () => {
+  const handleClosingModal = () => { 
     setModalVisible(false);
     setShowModalAllowLocation(false);
   };

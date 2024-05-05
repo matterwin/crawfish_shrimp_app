@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     fontSize: 19
   },
   header: {
-    backgroundColor: 'rgba(10, 10, 10, 0.15)',
+    backgroundColor: 'rgba(10, 10, 10, 0.35)',
     // backgroundColor: 'rgba(50, 168, 82, 0.15)',
     borderRadius: 50,
     width: 50,
